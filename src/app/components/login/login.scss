@@ -1,0 +1,131 @@
+.login-container {
+  position: relative;
+  min-height: calc(100vh - 64px);
+  background: #f3f4f6; // parte blanca abajo
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-bg-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+
+  background: linear-gradient(
+    90deg,
+    #2f80ed 0%,
+    #833ab4 40%,
+    #fd1d1d 70%,
+    #fcb045 100%
+  );
+
+  z-index: 0;
+}
+
+
+
+.login-card {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  max-width: 900px;
+  height: 500px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border-radius: 20px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* IZQUIERDA (LOGO) */
+.login-left {
+  background-color: white;
+  background-image: url('/LogoCeutec.png');
+  background-size: 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+   border-right: 2px solid #000205;
+}
+
+/* DERECHA (FORMULARIO) */
+.login-right {
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-right h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #111827;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  color: #374151;
+  font-weight: 600;
+}
+
+input {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 2px solid #d1d5db;
+  outline: none;
+  font-size: 14px;
+}
+
+input:focus {
+  border-bottom: 2px solid #2563eb;
+}
+
+button {
+  margin-top: 10px;
+  padding: 12px;
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #1f2937;
+}
+
+.signup {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.signup a {
+  color: #2563eb;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .login-card {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .login-left {
+    height: 200px;
+  }
+}

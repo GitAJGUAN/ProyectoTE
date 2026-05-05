@@ -1,0 +1,45 @@
+<section class="dashboard-container">
+  <div class="dashboard-card">
+
+    <h2>Reservar espacio</h2>
+    <p>Selecciona un espacio y completa los datos</p>
+
+    <!-- ESPACIOS (DEL HOME) -->
+    <label>Espacio</label>
+    <select>
+      <option>Salas de estudio (3 disponibles)</option>
+      <option>Laboratorios (1 disponible)</option>
+      <option>Zonas colaborativas (2 disponibles)</option>
+      <option>Áreas de reunión (4 disponibles)</option>
+    </select>
+
+    <!-- FECHA -->
+    <label>Fecha</label>
+    <input type="date">
+
+    <!-- HORA -->
+    <label>Hora</label>
+    <input type="time">
+
+    <!-- DURACIÓN -->
+    <label>Duración (horas)</label>
+    <input type="number" min="1" placeholder="Ej: 2">
+
+    <!-- BOTÓN -->
+    <button>Reservar</button>
+
+    <!-- HISTORIAL -->
+    <div class="historial">
+      <h3>Mis reservas</h3>
+
+      <div class="reserva">
+        Sala de estudio - 05/05/2026 - 10:00 AM
+      </div>
+
+      <div class="reserva">
+        Zona colaborativa - 06/05/2026 - 02:00 PM
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background: #1f2937;
+  color: white;
+  height: 64px;
+
+  display: flex;
+  justify-content: center;   
+  align-items: center;
+
+  font-family: Arial, sans-serif;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.contenido {
+  height: calc(100vh - 64px);
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 16px 20px;
+    text-align: center;
+  }
+}

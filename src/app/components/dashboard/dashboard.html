@@ -4,40 +4,62 @@
     <h2>Reservar espacio</h2>
     <p>Selecciona un espacio y completa los datos</p>
 
-    <!-- ESPACIOS (DEL HOME) -->
+    <!-- ESPACIO -->
     <label>Espacio</label>
-    <select>
-      <option>Salas de estudio (3 disponibles)</option>
-      <option>Laboratorios (1 disponible)</option>
-      <option>Zonas colaborativas (2 disponibles)</option>
-      <option>Áreas de reunión (4 disponibles)</option>
+    <select [(ngModel)]="reserva.espacio">
+      <option value="">Seleccione un espacio</option>
+      <option value="Salas de estudio">Salas de estudio (3 disponibles)</option>
+      <option value="Laboratorios">Laboratorios (1 disponible)</option>
+      <option value="Zonas colaborativas">Zonas colaborativas (2 disponibles)</option>
+      <option value="Áreas de reunión">Áreas de reunión (4 disponibles)</option>
     </select>
 
     <!-- FECHA -->
     <label>Fecha</label>
-    <input type="date">
+    <input type="date" [(ngModel)]="reserva.fecha">
 
     <!-- HORA -->
     <label>Hora</label>
-    <input type="time">
+    <input type="time" [(ngModel)]="reserva.hora">
 
     <!-- DURACIÓN -->
     <label>Duración (horas)</label>
-    <input type="number" min="1" placeholder="Ej: 2">
+    <input
+      type="number"
+      min="1"
+      [(ngModel)]="reserva.duracion">
 
     <!-- BOTÓN -->
-    <button>Reservar</button>
+    <button (click)="guardarReserva()">
+      Reservar
+    </button>
+
+    <!-- MENSAJE -->
+    <p *ngIf="mensaje">{{ mensaje }}</p>
 
     <!-- HISTORIAL -->
     <div class="historial">
       <h3>Mis reservas</h3>
 
-      <div class="reserva">
-        Sala de estudio - 05/05/2026 - 10:00 AM
-      </div>
+      <div
+        class="reserva"
+        *ngFor="let item of reservas">
 
-      <div class="reserva">
-        Zona colaborativa - 06/05/2026 - 02:00 PM
+        <strong>{{ item.espacio }}</strong> -
+        {{ item.fecha }} -
+        {{ item.hora }} -
+        {{ item.duracion }} hora(s)
+
+        <br><br>
+
+        <button (click)="editarReserva(item)">
+          Editar
+        </button>
+
+        <button
+          (click)="eliminarReserva(item.id!)">
+          Eliminar
+        </button>
       </div>
     </div>
 

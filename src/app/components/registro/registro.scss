@@ -97,3 +97,13 @@ a {
   font-weight: bold;
   text-decoration: none;
 }
+
+/* QUITAR FLECHAS DEL INPUT NUMBER */
+
+/* Chrome, Edge, Brave */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+

@@ -3,30 +3,62 @@
   <!-- FONDO DE COLORES -->
   <div class="login-bg-top"></div>
 
-  <!-- Tarjeta del Login -->
+  <!-- TARJETA -->
   <div class="login-card">
 
-    <!-- Lado izquierdo -->
+    <!-- LADO IZQUIERDO -->
     <div class="login-left"></div>
 
-    <!-- Lado derecho -->
+    <!-- LADO DERECHO -->
     <div class="login-right">
+
       <h2>Login</h2>
 
       <form>
+
+        <!-- EMAIL -->
         <label>Email</label>
-        <input type="email" placeholder="Ingresa tu correo" />
 
+        <input
+          type="email"
+          placeholder="Ingresa tu correo"
+          [(ngModel)]="correo"
+          name="correo"
+        />
+
+        <!-- PASSWORD -->
         <label>Password</label>
-        <input type="password" placeholder="Ingresa tu contraseña" />
 
-        <button type="button">Login</button>
+        <input
+          type="password"
+          placeholder="Ingresa tu contraseña"
+          [(ngModel)]="password"
+          name="password"
+        />
+
+        <!-- BOTON -->
+        <button
+          type="button"
+          (click)="iniciarSesion()"
+        >
+          Login
+        </button>
+
+        <!-- MENSAJE ERROR -->
+        <p class="error" *ngIf="mensajeError">
+          {{ mensajeError }}
+        </p>
+
       </form>
 
+      <!-- REGISTRO -->
       <p class="signup">
-        ¿No tienes cuenta? <a routerLink="/registro">Registrate</a>
+        ¿No tienes cuenta?
+        <a routerLink="/registro">Regístrate</a>
       </p>
+
     </div>
 
   </div>
+
 </section>

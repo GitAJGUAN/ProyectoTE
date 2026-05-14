@@ -1,0 +1,138 @@
+.confirmacion-container {
+  height: 100%;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    url('/BackgroundCeutec.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.confirmacion-card {
+  width: 100%;
+  max-width: 650px;
+  max-height: 90%;
+  overflow-y: auto;
+  background: white;
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+}
+
+.confirmacion-card h2 {
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.confirmacion-card > p {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.mensaje {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.reserva {
+  background: #f3f4f6;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.reserva h3 {
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.reserva p {
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #374151;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+button {
+  padding: 10px 14px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.eliminar {
+  background: #dc2626;
+}
+
+.cancelar {
+  background: #6b7280;
+}
+
+.boton-confirmar {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
+
+  .confirmar {
+    padding: 12px 40px;
+    background: #059669;
+    color: white;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #047857;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+.contador {
+  background: #f0fdf4;
+  border-left: 4px solid #059669;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  color: #166534;
+  font-weight: 600;
+}

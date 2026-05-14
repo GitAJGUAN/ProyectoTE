@@ -4,64 +4,33 @@
     <h2>Reservar espacio</h2>
     <p>Selecciona un espacio y completa los datos</p>
 
-    <!-- ESPACIO -->
     <label>Espacio</label>
     <select [(ngModel)]="reserva.espacio">
       <option value="">Seleccione un espacio</option>
-      <option value="Salas de estudio">Salas de estudio (3 disponibles)</option>
-      <option value="Laboratorios">Laboratorios (1 disponible)</option>
-      <option value="Zonas colaborativas">Zonas colaborativas (2 disponibles)</option>
-      <option value="Áreas de reunión">Áreas de reunión (4 disponibles)</option>
+      <option value="Salas de estudio">Salas de estudio</option>
+      <option value="Laboratorios">Laboratorios</option>
+      <option value="Zonas colaborativas">Zonas colaborativas</option>
+      <option value="Áreas de reunión">Áreas de reunión</option>
     </select>
 
-    <!-- FECHA -->
     <label>Fecha</label>
     <input type="date" [(ngModel)]="reserva.fecha">
 
-    <!-- HORA -->
     <label>Hora</label>
     <input type="time" [(ngModel)]="reserva.hora">
 
-    <!-- DURACIÓN -->
     <label>Duración (horas)</label>
-    <input
-      type="number"
-      min="1"
-      [(ngModel)]="reserva.duracion">
+    <input type="number" min="1" [(ngModel)]="reserva.duracion">
 
-    <!-- BOTÓN -->
-    <button (click)="guardarReserva()">
-      Reservar
+    <button type="button" (click)="guardarReserva()" [disabled]="cargando()">
+      {{ cargando() ? 'Guardando...' : 'Reservar' }}
     </button>
 
-    <!-- MENSAJE -->
-    <p *ngIf="mensaje">{{ mensaje }}</p>
-
-    <!-- HISTORIAL -->
-    <div class="historial">
-      <h3>Mis reservas</h3>
-
-      <div
-        class="reserva"
-        *ngFor="let item of reservas">
-
-        <strong>{{ item.espacio }}</strong> -
-        {{ item.fecha }} -
-        {{ item.hora }} -
-        {{ item.duracion }} hora(s)
-
-        <br><br>
-
-        <button (click)="editarReserva(item)">
-          Editar
-        </button>
-
-        <button
-          (click)="eliminarReserva(item.id!)">
-          Eliminar
-        </button>
-      </div>
-    </div>
+    @if (mensaje()) {
+      <p class="error">
+        {{ mensaje() }}
+      </p>
+    }
 
   </div>
 </section>

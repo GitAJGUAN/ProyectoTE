@@ -21,5 +21,17 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () => import('./components/dashboard/dashboard').then(m => m.DashboardComponent)
+  },
+  {
+    path: 'hoja-confirmacion',
+    loadComponent: () =>
+      import('./components/hojaConfirmacion/hojaConfirmacion')
+        .then(m => m.HojaConfirmacion)
+  },
+  {
+    path: 'mis-reservas',
+    loadComponent: () =>
+      import('./components/misReservas/misReservas')
+        .then(m => m.MisReservas)
   }
 ];

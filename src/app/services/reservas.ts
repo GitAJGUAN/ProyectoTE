@@ -7,13 +7,16 @@ import {
   collectionData,
   doc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  query,
+  where
 } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
 
 export interface Reserva {
   id?: string;
+  usuarioId?: string;
   espacio: string;
   fecha: string;
   hora: string;
@@ -37,9 +40,20 @@ export class ReservasService {
     return addDoc(this.reservasCollection, reserva);
   }
 
-  // READ
+  // READ - Todas las reservas (temporal, para debug)
   obtenerReservas(): Observable<Reserva[]> {
     return collectionData(this.reservasCollection, {
+      idField: 'id'
+    }) as Observable<Reserva[]>;
+  }
+
+  // READ - Reservas del usuario (cuando se implemente autenticación)
+  obtenerReservasPorUsuario(usuarioId: string): Observable<Reserva[]> {
+    const consulta = query(
+      this.reservasCollection,
+      where('usuarioId', '==', usuarioId)
+    );
+    return collectionData(consulta, {
       idField: 'id'
     }) as Observable<Reserva[]>;
   }

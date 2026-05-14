@@ -1,0 +1,157 @@
+<section class="confirmacion-container">
+
+  <div class="confirmacion-card">
+
+    <h2>Hoja de Confirmación</h2>
+
+    <p>
+      Consulta, edita o elimina tus reservas realizadas.
+    </p>
+
+    <!-- CONTADOR -->
+    <p class="contador">
+      Total de reservas: {{ reservas().length }}
+    </p>
+
+    <!-- SI NO HAY RESERVAS -->
+    @if (reservas().length === 0) {
+      <p class="mensaje">
+        No hay reservas registradas.
+      </p>
+    }
+
+    <!-- MENSAJE -->
+    @if (mensaje()) {
+      <p class="mensaje">
+        {{ mensaje() }}
+      </p>
+    }
+
+    <!-- LISTA DE RESERVAS -->
+    @for (reserva of reservas(); track reserva.id) {
+      <div class="reserva">
+
+        <!-- VISTA NORMAL -->
+        @if (reservaEditando()?.id !== reserva.id) {
+          <h3>{{ reserva.espacio }}</h3>
+
+          <p>
+            <strong>Fecha:</strong>
+            {{ reserva.fecha }}
+          </p>
+
+          <p>
+            <strong>Hora:</strong>
+            {{ reserva.hora }}
+          </p>
+
+          <p>
+            <strong>Duración:</strong>
+            {{ reserva.duracion }} hora(s)
+          </p>
+
+          <div class="acciones">
+
+            <button
+              type="button"
+              (click)="editarReserva(reserva)">
+
+              Editar
+
+            </button>
+
+            <button
+              type="button"
+              class="eliminar"
+              (click)="eliminarReserva(reserva.id!)">
+
+              Eliminar
+
+            </button>
+
+          </div>
+        }
+
+        <!-- MODO EDICION -->
+        @if (reservaEditando()?.id === reserva.id) {
+          <label>Espacio</label>
+
+          <select [(ngModel)]="reservaEditando()!.espacio">
+
+            <option value="Salas de estudio">
+              Salas de estudio
+            </option>
+
+            <option value="Laboratorios">
+              Laboratorios
+            </option>
+
+            <option value="Zonas colaborativas">
+              Zonas colaborativas
+            </option>
+
+            <option value="Áreas de reunión">
+              Áreas de reunión
+            </option>
+
+          </select>
+
+          <label>Fecha</label>
+
+          <input
+            type="date"
+            [(ngModel)]="reservaEditando()!.fecha">
+
+          <label>Hora</label>
+
+          <input
+            type="time"
+            [(ngModel)]="reservaEditando()!.hora">
+
+          <label>Duración</label>
+
+          <input
+            type="number"
+            min="1"
+            [(ngModel)]="reservaEditando()!.duracion">
+
+          <div class="acciones">
+
+            <button
+              type="button"
+              (click)="guardarEdicion()">
+
+              Guardar
+
+            </button>
+
+            <button
+              type="button"
+              class="cancelar"
+              (click)="cancelarEdicion()">
+
+              Cancelar
+
+            </button>
+
+          </div>
+        }
+
+      </div>
+    }
+
+    <!-- BOTON CONFIRMAR -->
+    @if (reservas().length > 0) {
+      <div class="boton-confirmar">
+        <button
+          type="button"
+          class="confirmar"
+          (click)="confirmarReservaciones()">
+          Confirmar Reservaciones
+        </button>
+      </div>
+    }
+
+  </div>
+
+</section>

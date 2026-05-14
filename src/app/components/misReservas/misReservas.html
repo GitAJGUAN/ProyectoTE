@@ -1,0 +1,82 @@
+<section class="mis-reservas-container">
+
+  <div class="mis-reservas-card">
+
+    <h2>Mis Reservas Confirmadas</h2>
+
+    <p>
+      Aquí se encuentran todas tus reservas confirmadas. Puedes hacer nuevas reservas o volver al inicio.
+    </p>
+
+    <!-- CARGANDO -->
+    @if (cargando()) {
+      <p class="cargando">Cargando tus reservas...</p>
+    }
+
+    <!-- SI NO HAY RESERVAS -->
+    @if (!cargando() && reservas().length === 0) {
+      <div class="sin-reservas">
+        <p>No tienes reservas confirmadas aún.</p>
+        <button
+          type="button"
+          class="hacer-reserva"
+          (click)="hacerOtraReserva()">
+          Hacer una Reserva
+        </button>
+      </div>
+    }
+
+    <!-- LISTA DE RESERVAS -->
+    @if (!cargando() && reservas().length > 0) {
+      <div class="contador">
+        <p>Total de reservas confirmadas: <strong>{{ reservas().length }}</strong></p>
+      </div>
+
+      <div class="reservas-list">
+        @for (reserva of reservas(); track reserva.id) {
+          <div class="reserva-item">
+            <div class="reserva-header">
+              <h3>{{ reserva.espacio }}</h3>
+              <span class="estado">✓ Confirmada</span>
+            </div>
+
+            <div class="reserva-detalles">
+              <div class="detalle">
+                <strong>Fecha:</strong>
+                <span>{{ reserva.fecha }}</span>
+              </div>
+
+              <div class="detalle">
+                <strong>Hora:</strong>
+                <span>{{ reserva.hora }}</span>
+              </div>
+
+              <div class="detalle">
+                <strong>Duración:</strong>
+                <span>{{ reserva.duracion }} hora(s)</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="acciones-finales">
+        <button
+          type="button"
+          class="hacer-otra"
+          (click)="hacerOtraReserva()">
+          Hacer Otra Reserva
+        </button>
+
+        <button
+          type="button"
+          class="volver"
+          (click)="volverAtras()">
+          Volver al Inicio
+        </button>
+      </div>
+    }
+
+  </div>
+
+</section>

@@ -38,7 +38,8 @@ export class Login {
       .subscribe((usuarios) => {
 
         if (usuarios.length > 0) {
-
+          localStorage.setItem('usuarioLogueado', JSON.stringify(usuarios[0]));
+          this.router.navigate(['/home']);    
           this.mensajeError = '';
 
           this.router.navigate(['/home']);

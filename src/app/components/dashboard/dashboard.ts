@@ -19,6 +19,8 @@ import {
 })
 export class DashboardComponent {
 
+  fechaMinima = new Date().toISOString().split('T')[0];
+
   reserva: Reserva = {
     espacio: '',
     fecha: '',
@@ -34,7 +36,9 @@ export class DashboardComponent {
     private router: Router
   ) {}
 
-  guardarReserva() {
+  validarReserva(): boolean {
+    this.mensaje.set('');
+
     if (
       !this.reserva.espacio ||
       !this.reserva.fecha ||
@@ -42,25 +46,46 @@ export class DashboardComponent {
       !this.reserva.duracion
     ) {
       this.mensaje.set('Todos los campos son obligatorios');
+      return false;
+    }
+
+    if (this.reserva.fecha < this.fechaMinima) {
+      this.mensaje.set('No puedes reservar una fecha anterior a la actual');
+      return false;
+    }
+
+    if (this.reserva.hora < '07:00' || this.reserva.hora > '21:00') {
+      this.mensaje.set('La hora debe estar entre 7:00 AM y 9:00 PM');
+      return false;
+    }
+
+    if (this.reserva.duracion < 1) {
+      this.mensaje.set('La duración debe ser mínimo de 1 hora');
+      return false;
+    }
+
+    return true;
+  }
+
+  guardarReserva() {
+    if (!this.validarReserva()) {
       return;
     }
 
-    // Obtener usuario del localStorage
     const usuarioLogueado = localStorage.getItem('usuarioLogueado');
+
     if (usuarioLogueado) {
       const usuario = JSON.parse(usuarioLogueado);
       this.reserva.usuarioId = usuario.id;
     }
 
     this.cargando.set(true);
-    
-    console.log('Guardando reserva:', this.reserva);
-    
+
     this.reservasService.agregarReserva(this.reserva)
       .then((docRef) => {
         console.log('Reserva guardada exitosamente con ID:', docRef.id);
         this.mensaje.set('Reserva guardada correctamente');
-        // Esperar un bit antes de navegar para asegurar que Firestore lo procese
+
         setTimeout(() => {
           this.router.navigate(['/hoja-confirmacion']);
         }, 800);

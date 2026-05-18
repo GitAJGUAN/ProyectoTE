@@ -1,19 +1,25 @@
+/* CONTENEDOR */
 .auth-container {
   position: relative;
-  min-height: calc(100vh - 64px);
+  min-height: 100%;
+
   background: #f3f4f6;
+
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+
+  padding: 20px 16px;
 }
 
-/* FONDO DE ARRIBA (COLORES) */
+/* FONDO SUPERIOR */
 .auth-bg-top {
   position: absolute;
   top: 0;
   left: 0;
+
   width: 100%;
-  height: 50%;
+  height: 45%;
 
   background: linear-gradient(
     90deg,
@@ -32,63 +38,112 @@
   z-index: 1;
 
   width: 100%;
-  max-width: 420px;
+  max-width: 100%;
+
+  margin-top: 20px;
+  padding: 28px 22px;
+
   background: white;
-  padding: 35px;
+
   border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .auth-card h2 {
   color: #111827;
+
   margin-bottom: 10px;
+
+  font-size: 30px;
+  text-align: center;
 }
 
 .auth-card p {
   color: #6b7280;
-  margin-bottom: 25px;
+
+  margin-bottom: 22px;
+
+  font-size: 16px;
+  text-align: center;
 }
 
+/* FORMULARIO */
 form {
   display: flex;
   flex-direction: column;
 }
 
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
 label {
+  display: block;
+
   margin-bottom: 6px;
-  font-weight: 600;
+
   color: #374151;
+
+  font-size: 16px;
+  font-weight: 600;
 }
 
 input {
-  padding: 12px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  display: block;
+
+  padding: 13px;
   margin-bottom: 18px;
+
   border: 1px solid #d1d5db;
   border-radius: 10px;
+
   outline: none;
+
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 input:focus {
   border-color: #2563eb;
 }
 
+/* BOTÓN */
 button {
-  padding: 13px;
+  width: 100%;
+
+  padding: 14px;
+
   background: #2563eb;
   color: white;
+
   border: none;
   border-radius: 10px;
+
+  font-size: 16px;
   font-weight: bold;
+
   cursor: pointer;
+
+  transition: 0.3s ease;
 }
 
 button:hover {
   background: #1d4ed8;
 }
 
+/* LINK */
 span {
   display: block;
+
   margin-top: 20px;
+
+  font-size: 14px;
   text-align: center;
 }
 
@@ -98,12 +153,83 @@ a {
   text-decoration: none;
 }
 
-/* QUITAR FLECHAS DEL INPUT NUMBER */
+/* MENSAJES */
+.error {
+  display: block;
 
-/* Chrome, Edge, Brave */
+  color: #dc2626;
+
+  font-size: 13px;
+
+  margin-top: -12px;
+  margin-bottom: 14px;
+}
+
+.exito {
+  margin-bottom: 18px;
+  padding: 14px;
+
+  background: #ecfdf5;
+  border: 1px solid #10b981;
+
+  color: #065f46;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+/* QUITAR FLECHAS DEL INPUT NUMBER */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+/* FIREFOX */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* 480px */
+@media (min-width: 480px) {
+  .auth-container {
+    padding: 24px;
+  }
+
+  .auth-card {
+    max-width: 460px;
+    padding: 35px;
+  }
+}
+
+/* 768px */
+@media (min-width: 768px) {
+  .auth-container {
+    align-items: center;
+  }
+
+  .auth-card {
+    max-width: 620px;
+    margin-top: 0;
+  }
+
+  .auth-card h2 {
+    font-size: 30px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+  }
+}
+
+/* 1024px */
+@media (min-width: 1024px) {
+  .auth-card {
+    max-width: 650px;
+  }
+}

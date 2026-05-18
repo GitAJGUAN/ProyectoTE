@@ -1,22 +1,100 @@
 <nav class="navbar">
-  <div class="logo">Co-Working Universitario</div>
 
-  <button class="menu-btn" *ngIf="estaLogueado()" (click)="abrirMenu()">
+  <!-- USUARIO -->
+  <div class="usuario-info" *ngIf="estaLogueado()">
+
+    <span class="desktop-user">
+      Bienvenid@ {{ nombreUsuario() }}
+    </span>
+
+    <span class="mobile-user">
+       {{ numeroCuenta() }}
+    </span>
+
+  </div>
+
+  <!-- LOGO -->
+  <div class="logo">
+    Co-Working Universitario
+  </div>
+
+  <!-- MENU -->
+  <button
+    class="menu-btn"
+    *ngIf="estaLogueado()"
+    (click)="abrirMenu()">
     ☰
   </button>
+
 </nav>
 
 <div class="sidebar" [class.active]="menuAbierto">
+
   <h3>Menú</h3>
 
-  <button routerLink="/home" (click)="cerrarMenu()">Inicio</button>
-  <button routerLink="/dashboard" (click)="cerrarMenu()">Reservar espacio</button>
-  <button routerLink="/mis-reservas" (click)="cerrarMenu()">Mis Reservas</button>
-  <button (click)="cerrarSesion()">Cerrar sesión</button>
+  <button routerLink="/home" (click)="cerrarMenu()">
+    Inicio
+  </button>
+
+  <button routerLink="/dashboard" (click)="cerrarMenu()">
+    Reservar espacio
+  </button>
+
+  <button routerLink="/mis-reservas" (click)="cerrarMenu()">
+    Mis Reservas
+  </button>
+
+  <button (click)="cerrarSesion()">
+    Cerrar sesión
+  </button>
+
 </div>
 
-<div class="overlay" *ngIf="menuAbierto" (click)="cerrarMenu()"></div>
+<div
+  class="overlay"
+  *ngIf="menuAbierto"
+  (click)="cerrarMenu()">
+</div>
 
 <main class="contenido">
   <router-outlet></router-outlet>
 </main>
+
+<footer class="footer">
+
+  <div class="footer-grid">
+
+    <div class="footer-section">
+      <h3>Redes Sociales</h3>
+
+      <div class="social-icons">
+        <a href="https://www.facebook.com/Ceutechn/">📘 Facebook</a>
+        <a href="https://www.instagram.com/ceutec_hn/?hl=es">📸 Instagram</a>
+        <a href="https://twitter.com/ceutec_hn">🐦 Twitter</a>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <h3>Contacto</h3>
+
+      <p>coworking@ceutec.hn</p>
+      <p>+504 9999-9999</p>
+    </div>
+
+    <div class="footer-section">
+      <h3>Ubicación</h3>
+
+      <p>Tegucigalpa, Honduras</p>
+      <p>Campus CEUTEC</p>
+
+      <p>San Pedro Sula, Honduras</p>
+      <p>Campus CEUTEC</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Co-Working Universitario | Todos los derechos reservados
+  </div>
+
+</footer>

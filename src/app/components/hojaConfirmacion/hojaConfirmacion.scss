@@ -1,44 +1,85 @@
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
 .confirmacion-container {
-  height: 100%;
+  min-height: 100%;
+  width: 100%;
+
   background:
     linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
     url('/BackgroundCeutec.png');
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  padding: 40px;
+
+  padding: 30px 20px;
 }
 
+/* =========================
+   TARJETA PRINCIPAL
+========================= */
 .confirmacion-card {
   width: 100%;
-  max-width: 650px;
-  max-height: 90%;
-  overflow-y: auto;
+  max-width: 420px;
+
   background: white;
-  padding: 35px;
+
+  padding: 25px 20px;
+
   border-radius: 18px;
+
   box-shadow: 0 10px 30px rgba(0,0,0,0.18);
 }
 
+/* =========================
+   TITULOS
+========================= */
 .confirmacion-card h2 {
   color: #111827;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  font-size: 24px;
+  text-align: center;
 }
 
 .confirmacion-card > p {
   color: #6b7280;
   margin-bottom: 20px;
+  text-align: center;
+  line-height: 1.5;
 }
 
+/* =========================
+   CONTADOR
+========================= */
+.contador {
+  background: #f0fdf4;
+  border-left: 4px solid #059669;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 18px;
+  color: #166534;
+  font-weight: 600;
+}
+
+/* =========================
+   MENSAJE
+========================= */
 .mensaje {
   color: #2563eb;
   font-weight: bold;
+  margin-bottom: 18px;
+  text-align: center;
 }
 
+/* =========================
+   TARJETA DE RESERVA
+========================= */
 .reserva {
   background: #f3f4f6;
   padding: 18px;
@@ -49,13 +90,18 @@
 .reserva h3 {
   color: #2563eb;
   margin-bottom: 10px;
+  font-size: 18px;
 }
 
 .reserva p {
   margin-bottom: 6px;
   color: #374151;
+  line-height: 1.5;
 }
 
+/* =========================
+   FORMULARIOS
+========================= */
 label {
   display: block;
   margin-bottom: 6px;
@@ -71,22 +117,41 @@ select {
   border: 1px solid #d1d5db;
   border-radius: 10px;
   outline: none;
+  font-size: 14px;
 }
 
+input:focus,
+select:focus {
+  border-color: #2563eb;
+}
+
+/* =========================
+   ACCIONES
+========================= */
 .acciones {
   display: flex;
+  flex-direction: column;
   gap: 10px;
   margin-top: 14px;
 }
 
+/* =========================
+   BOTONES
+========================= */
 button {
-  padding: 10px 14px;
+  width: 100%;
+  padding: 11px 14px;
   background: #2563eb;
   color: white;
   border: none;
   border-radius: 9px;
   font-weight: bold;
   cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.92;
 }
 
 .eliminar {
@@ -97,42 +162,88 @@ button {
   background: #6b7280;
 }
 
+/* =========================
+   BOTON CONFIRMAR
+========================= */
 .boton-confirmar {
   display: flex;
   justify-content: center;
   margin-top: 30px;
   padding-top: 20px;
   border-top: 2px solid #e5e7eb;
+}
 
-  .confirmar {
-    padding: 12px 40px;
-    background: #059669;
-    color: white;
-    font-size: 1.05rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.confirmar {
+  width: 100%;
+  padding: 13px 20px;
+  background: #059669;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
 
-    &:hover {
-      background: #047857;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
-      transform: translateY(-2px);
-    }
+.confirmar:hover {
+  background: #047857;
+}
 
-    &:active {
-      transform: translateY(0);
-    }
+/* ==================================================
+   480px
+================================================== */
+@media (min-width: 480px) {
+  .confirmacion-container {
+    padding: 30px;
+  }
+
+  .confirmacion-card {
+    padding: 30px;
   }
 }
 
-.contador {
-  background: #f0fdf4;
-  border-left: 4px solid #059669;
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  color: #166534;
-  font-weight: 600;
+/* ==================================================
+   768px
+================================================== */
+@media (min-width: 768px) {
+  .confirmacion-card {
+    max-width: 650px;
+    padding: 35px;
+  }
+
+  .confirmacion-card h2 {
+    font-size: 30px;
+    text-align: left;
+  }
+
+  .confirmacion-card > p {
+    text-align: left;
+  }
+
+  .acciones {
+    flex-direction: row;
+  }
+
+  button {
+    width: auto;
+  }
+
+  .confirmar {
+    width: auto;
+    padding: 13px 40px;
+  }
+}
+
+/* ==================================================
+   1024px
+================================================== */
+@media (min-width: 1024px) {
+  .confirmacion-card {
+    max-width: 720px;
+  }
+
+  .confirmacion-card h2 {
+    font-size: 34px;
+  }
 }

@@ -14,15 +14,32 @@
     </select>
 
     <label>Fecha</label>
-    <input type="date" [(ngModel)]="reserva.fecha">
+    <input
+      type="date"
+      [(ngModel)]="reserva.fecha"
+      [min]="fechaMinima"
+    >
 
     <label>Hora</label>
-    <input type="time" [(ngModel)]="reserva.hora">
+    <input
+      type="time"
+      [(ngModel)]="reserva.hora"
+      min="07:00"
+      max="21:00"
+    >
 
     <label>Duración (horas)</label>
-    <input type="number" min="1" [(ngModel)]="reserva.duracion">
+    <input
+      type="number"
+      min="1"
+      [(ngModel)]="reserva.duracion"
+    >
 
-    <button type="button" (click)="guardarReserva()" [disabled]="cargando()">
+    <button
+      type="button"
+      (click)="guardarReserva()"
+      [disabled]="cargando()"
+    >
       {{ cargando() ? 'Guardando...' : 'Reservar' }}
     </button>
 

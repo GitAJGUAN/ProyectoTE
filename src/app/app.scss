@@ -1,47 +1,95 @@
+/* RESET */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* BASE */
+body {
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  background: #f3f4f6;
+}
+
+/* NAVBAR */
 .navbar {
   background: #1f2937;
   color: white;
-  height: 64px;
-  padding: 0 35px;
+  min-height: 86px;
+  padding: 10px 14px;
 
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "usuario menu"
+    "logo logo";
   align-items: center;
-
-  font-family: Arial, sans-serif;
+  row-gap: 6px;
 }
 
+.usuario-info {
+  grid-area: usuario;
+  justify-self: start;
+
+  color: white;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: bold;
+  max-width: 180px;
+}
 
 .logo {
+  grid-area: logo;
+  justify-self: center;
+
+  color: white;
   font-size: 20px;
   font-weight: bold;
+  text-align: center;
 }
 
 .menu-btn {
+  grid-area: menu;
+  justify-self: end;
+
   background: none;
   border: none;
   color: white;
+
   font-size: 30px;
   cursor: pointer;
 }
 
+.desktop-user {
+  display: none;
+}
+
+.mobile-user {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* SIDEBAR */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -280px;
-  width: 280px;
+  right: -100%;
+
+  width: 260px;
+  max-width: 90%;
   height: 100vh;
+
   background: white;
   z-index: 1000;
-  padding: 30px;
+
+  padding: 25px 20px;
   box-shadow: -5px 0 20px rgba(0, 0, 0, 0.25);
   transition: right 0.3s ease;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar.active {
@@ -51,17 +99,22 @@
 .sidebar h3 {
   margin-bottom: 25px;
   color: #111827;
+  font-size: 22px;
 }
 
 .sidebar button {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   margin-bottom: 12px;
+
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+
   background: #f3f4f6;
   cursor: pointer;
+
   font-weight: bold;
+  font-size: 15px;
   text-align: left;
 }
 
@@ -69,6 +122,7 @@
   background: #e5e7eb;
 }
 
+/* OVERLAY */
 .overlay {
   position: fixed;
   inset: 0;
@@ -76,17 +130,146 @@
   z-index: 999;
 }
 
+/* CONTENIDO */
 .contenido {
-  height: calc(100vh - 64px);
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
+  min-height: calc(100dvh - 64px);
+  overflow: visible;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
+/* FOOTER */
+.footer {
+  background: #111827;
+  color: white;
+
+  padding: 50px 20px 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 35px;
+
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer-section h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.footer-section p,
+.footer-section a {
+  color: #d1d5db;
+  text-decoration: none;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.footer-section a:hover {
+  color: white;
+}
+
+.social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-bottom {
+  border-top: 1px solid #374151;
+  margin-top: 35px;
+  padding-top: 20px;
+
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* 480px */
+@media (min-width: 480px) {
   .navbar {
-    padding: 16px 20px;
-    text-align: center;
+    padding: 12px 22px;
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+
+  .sidebar {
+    width: 280px;
+  }
+}
+
+/* 768px */
+@media (min-width: 768px) {
+  .navbar {
+    height: 64px;
+    min-height: 64px;
+    padding: 0 35px;
+
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "usuario logo menu";
+  }
+
+  .usuario-info {
+    font-size: 18px;
+    max-width: none;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .menu-btn {
+    font-size: 34px;
+  }
+
+  .desktop-user {
+    display: block;
+  }
+
+  .mobile-user {
+    display: none;
+  }
+
+  .sidebar {
+    width: 320px;
+    padding: 35px 25px;
+  }
+
+  .sidebar h3 {
+    font-size: 26px;
+  }
+
+  .sidebar button {
+    font-size: 16px;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 1024px */
+@media (min-width: 1024px) {
+  .navbar {
+    padding: 0 45px;
+  }
+
+  .usuario-info {
+    font-size: 20px;
+  }
+
+  .logo {
+    font-size: 28px;
+  }
+
+  .sidebar {
+    width: 340px;
+  }
+
+  .footer {
+    padding: 60px 50px 25px;
   }
 }

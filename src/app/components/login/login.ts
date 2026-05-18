@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {
-  UsuariosService
-} from '../../services/usuarios';
+
+import { UsuariosService } from '../../services/usuarios';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +12,6 @@ import {
   styleUrl: './login.scss',
 })
 export class Login {
-
   correo = '';
   password = '';
 
@@ -25,10 +23,7 @@ export class Login {
   ) {}
 
   iniciarSesion() {
-
-    // VALIDAR CAMPOS VACIOS
     if (!this.correo || !this.password) {
-
       this.mensajeError = 'Todos los campos son obligatorios';
       return;
     }
@@ -36,21 +31,13 @@ export class Login {
     this.usuariosService
       .validarUsuario(this.correo, this.password)
       .subscribe((usuarios) => {
-
         if (usuarios.length > 0) {
           localStorage.setItem('usuarioLogueado', JSON.stringify(usuarios[0]));
-          this.router.navigate(['/home']);    
           this.mensajeError = '';
-
           this.router.navigate(['/home']);
-
         } else {
-
-          this.mensajeError =
-            'Correo o contraseña incorrectos';
+          this.mensajeError = 'Correo o contraseña incorrectos';
         }
-
       });
-
   }
 }

@@ -6,13 +6,18 @@ import {
   addDoc,
   collectionData,
   query,
-  where
+  where,
+  getDocs
 } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
 
 export interface Usuario {
   id?: string;
+  primerNombre: string;
+  segundoNombre: string;
+  primerApellido: string;
+  segundoApellido: string;
   nombre: string;
   correo: string;
   numeroCuenta: number;
@@ -25,24 +30,19 @@ export interface Usuario {
 export class UsuariosService {
 
   private firestore = inject(Firestore);
-
   private usuariosCollection = collection(this.firestore, 'usuarios');
 
-  // CREATE
   agregarUsuario(usuario: Usuario) {
     return addDoc(this.usuariosCollection, usuario);
   }
 
-  // READ
   obtenerUsuarios(): Observable<Usuario[]> {
     return collectionData(this.usuariosCollection, {
       idField: 'id'
     }) as Observable<Usuario[]>;
   }
 
-  // LOGIN
   validarUsuario(correo: string, password: string) {
-
     const consulta = query(
       this.usuariosCollection,
       where('correo', '==', correo),
@@ -52,5 +52,15 @@ export class UsuariosService {
     return collectionData(consulta, {
       idField: 'id'
     }) as Observable<Usuario[]>;
+  }
+
+  async existeNumeroCuenta(numeroCuenta: number): Promise<boolean> {
+    const consulta = query(
+      this.usuariosCollection,
+      where('numeroCuenta', '==', numeroCuenta)
+    );
+
+    const resultado = await getDocs(consulta);
+    return !resultado.empty;
   }
 }

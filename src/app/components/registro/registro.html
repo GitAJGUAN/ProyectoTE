@@ -1,9 +1,7 @@
 <section class="auth-container">
 
-  <!-- FONDO SUPERIOR -->
   <div class="auth-bg-top"></div>
 
-  <!-- TARJETA -->
   <div class="auth-card">
 
     <h2>Crear cuenta</h2>
@@ -12,39 +10,112 @@
       Regístrate para gestionar tus reservas.
     </p>
 
+    <p class="exito" *ngIf="mensajeExito">
+      {{ mensajeExito }}
+    </p>
+
     <form>
 
-      <!-- NOMBRE -->
-      <label>Nombre completo</label>
+      <div class="grid-2">
 
-      <input
-        type="text"
-        placeholder="Ingresa tu nombre"
-        [(ngModel)]="usuario.nombre"
-        name="nombre"
-      />
+        <div>
+          <label>Primer nombre</label>
 
-      <!-- CORREO -->
+          <input
+            type="text"
+            placeholder="Ej: Brad"
+            [(ngModel)]="usuario.primerNombre"
+            name="primerNombre"
+            (input)="limpiarError('primerNombre')"
+          />
+
+          <small class="error">
+            {{ errores.primerNombre }}
+          </small>
+        </div>
+
+        <div>
+          <label>Segundo nombre</label>
+
+          <input
+            type="text"
+            placeholder="Ej: Carlos"
+            [(ngModel)]="usuario.segundoNombre"
+            name="segundoNombre"
+            (input)="limpiarError('segundoNombre')"
+          />
+
+          <small class="error">
+            {{ errores.segundoNombre }}
+          </small>
+        </div>
+
+      </div>
+
+      <div class="grid-2">
+
+        <div>
+          <label>Primer apellido</label>
+
+          <input
+            type="text"
+            placeholder="Ej: García"
+            [(ngModel)]="usuario.primerApellido"
+            name="primerApellido"
+            (input)="limpiarError('primerApellido')"
+          />
+
+          <small class="error">
+            {{ errores.primerApellido }}
+          </small>
+        </div>
+
+        <div>
+          <label>Segundo apellido</label>
+
+          <input
+            type="text"
+            placeholder="Ej: Morales"
+            [(ngModel)]="usuario.segundoApellido"
+            name="segundoApellido"
+            (input)="limpiarError('segundoApellido')"
+          />
+
+          <small class="error">
+            {{ errores.segundoApellido }}
+          </small>
+        </div>
+
+      </div>
+
       <label>Correo institucional</label>
 
       <input
         type="email"
-        placeholder="ejemplo@universidad.edu"
+        placeholder="ejemplo@unitec.edu"
         [(ngModel)]="usuario.correo"
         name="correo"
+        (input)="limpiarError('correo')"
       />
 
-      <!-- NUMERO CUENTA -->
+      <small class="error">
+        {{ errores.correo }}
+      </small>
+
       <label>Número de cuenta</label>
 
       <input
         type="number"
-        placeholder="Ej: 20251001"
+        placeholder="20251001"
         [(ngModel)]="usuario.numeroCuenta"
         name="numeroCuenta"
+        (input)="limpiarError('numeroCuenta')"
       />
 
-      <!-- PASSWORD -->
+      <small class="error">
+        {{ errores.numeroCuenta }}
+      </small>
+
       <label>Contraseña</label>
 
       <input
@@ -52,9 +123,13 @@
         placeholder="Crea una contraseña"
         [(ngModel)]="usuario.password"
         name="password"
+        (input)="limpiarError('password')"
       />
 
-      <!-- BOTON -->
+      <small class="error">
+        {{ errores.password }}
+      </small>
+
       <button
         type="button"
         (click)="registrarUsuario()"

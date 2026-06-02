@@ -1,3 +1,4 @@
+
 /* CONTENEDOR PRINCIPAL */
 .home-container {
   min-height: calc(100dvh - 64px);
@@ -11,8 +12,10 @@
   background-repeat: no-repeat;
 
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: flex-start;
 
   padding: 30px 16px;
   overflow: hidden;
@@ -71,11 +74,6 @@
   color: white;
 }
 
-.secondary {
-  background: white;
-  color: #111827;
-}
-
 /* TARJETA */
 .hero-card {
   background: rgba(255, 255, 255, 0.92);
@@ -108,41 +106,56 @@
   font-size: 18px;
 }
 
-.hero-card .item:last-child {
-  margin-bottom: 0;
-}
-
 .numero {
   font-weight: bold;
   color: #111827;
 }
 
-/* 480px */
-@media (min-width: 480px) {
-  .home-container {
-    padding: 35px 24px;
-  }
+/* ===================== */
+/* CALENDARIO HOME */
+/* ===================== */
 
-  .hero-text h1 {
-    font-size: 40px;
-  }
+.calendar-section {
+  width: 100%;
+  max-width: 1150px;
 
-  .hero-text p {
-    font-size: 18px;
-  }
+  margin-top: 40px;
+
+  background: white;
+
+  padding: 20px;
+  border-radius: 18px;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
-/* 768px */
+.calendar-section h2 {
+  text-align: center;
+
+  margin-bottom: 15px;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+/* FullCalendar */
+:host ::ng-deep .fc {
+  font-size: 14px;
+}
+
+:host ::ng-deep .fc-event {
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* RESPONSIVE */
 @media (min-width: 768px) {
-  .home-container {
-    align-items: center;
-    padding: 40px 8%;
-  }
 
   .hero {
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 40px;
   }
 
   .hero-text {
@@ -155,44 +168,5 @@
 
   .btn {
     width: auto;
-    padding: 13px 20px;
-    font-size: 16px;
-  }
-
-  .hero-text h1 {
-    font-size: 48px;
-  }
-
-  .hero-text p {
-    font-size: 17px;
-    max-width: 550px;
-  }
-
-  .hero-card h3 {
-    font-size: 20px;
-  }
-
-  .hero-card .item {
-    font-size: 16px;
-  }
-}
-
-/* 1024px */
-@media (min-width: 1024px) {
-  .hero {
-    grid-template-columns: 1.4fr 0.8fr;
-    gap: 55px;
-  }
-
-  .hero-text h1 {
-    font-size: 56px;
-  }
-
-  .hero-text p {
-    font-size: 18px;
-  }
-
-  .hero-card {
-    padding: 32px;
   }
 }

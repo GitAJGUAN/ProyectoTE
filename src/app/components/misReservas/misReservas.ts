@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 export class MisReservas implements OnInit, OnDestroy {
   reservas = signal<Reserva[]>([]);
   cargando = signal(true);
+  mensaje = signal('');
   private destroy$ = new Subject<void>();
 
   constructor(

@@ -4,11 +4,9 @@
 
   <div class="auth-card">
 
-    <h2>Crear cuenta</h2>
+    <h1>Crear cuenta</h1>
 
-    <p>
-      Regístrate para gestionar tus reservas.
-    </p>
+    <p>Regístrate para gestionar tus reservas.</p>
 
     <p class="exito" *ngIf="mensajeExito">
       {{ mensajeExito }}
@@ -16,133 +14,128 @@
 
     <form>
 
-      <div class="grid-2">
+      <fieldset>
+        <legend>Nombres</legend>
 
-        <div>
-          <label>Primer nombre</label>
+        <div class="grid-2">
 
+          <div class="campo">
+            <label for="primerNombre">Primer nombre</label>
+            <input
+              id="primerNombre"
+              type="text"
+              placeholder="Ej: Brad"
+              [(ngModel)]="usuario.primerNombre"
+              name="primerNombre"
+              (input)="limpiarError('primerNombre')"
+            />
+            <small class="error">{{ errores.primerNombre }}</small>
+          </div>
+
+          <div class="campo">
+            <label for="segundoNombre">Segundo nombre</label>
+            <input
+              id="segundoNombre"
+              type="text"
+              placeholder="Ej: Carlos"
+              [(ngModel)]="usuario.segundoNombre"
+              name="segundoNombre"
+              (input)="limpiarError('segundoNombre')"
+            />
+            <small class="error">{{ errores.segundoNombre }}</small>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Apellidos</legend>
+
+        <div class="grid-2">
+
+          <div class="campo">
+            <label for="primerApellido">Primer apellido</label>
+            <input
+              id="primerApellido"
+              type="text"
+              placeholder="Ej: García"
+              [(ngModel)]="usuario.primerApellido"
+              name="primerApellido"
+              (input)="limpiarError('primerApellido')"
+            />
+            <small class="error">{{ errores.primerApellido }}</small>
+          </div>
+
+          <div class="campo">
+            <label for="segundoApellido">Segundo apellido</label>
+            <input
+              id="segundoApellido"
+              type="text"
+              placeholder="Ej: Morales"
+              [(ngModel)]="usuario.segundoApellido"
+              name="segundoApellido"
+              (input)="limpiarError('segundoApellido')"
+            />
+            <small class="error">{{ errores.segundoApellido }}</small>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Datos de acceso</legend>
+
+        <div class="campo">
+          <label for="correo">Correo institucional</label>
           <input
-            type="text"
-            placeholder="Ej: Brad"
-            [(ngModel)]="usuario.primerNombre"
-            name="primerNombre"
-            (input)="limpiarError('primerNombre')"
+            id="correo"
+            type="email"
+            placeholder="ejemplo@unitec.edu"
+            [(ngModel)]="usuario.correo"
+            name="correo"
+            (input)="limpiarError('correo')"
           />
-
-          <small class="error">
-            {{ errores.primerNombre }}
-          </small>
+          <small class="error">{{ errores.correo }}</small>
         </div>
 
-        <div>
-          <label>Segundo nombre</label>
-
+        <div class="campo">
+          <label for="numeroCuenta">Número de cuenta</label>
           <input
-            type="text"
-            placeholder="Ej: Carlos"
-            [(ngModel)]="usuario.segundoNombre"
-            name="segundoNombre"
-            (input)="limpiarError('segundoNombre')"
+            id="numeroCuenta"
+            type="number"
+            placeholder="20251001"
+            [(ngModel)]="usuario.numeroCuenta"
+            name="numeroCuenta"
+            (input)="limpiarError('numeroCuenta')"
           />
-
-          <small class="error">
-            {{ errores.segundoNombre }}
-          </small>
+          <small class="error">{{ errores.numeroCuenta }}</small>
         </div>
 
-      </div>
-
-      <div class="grid-2">
-
-        <div>
-          <label>Primer apellido</label>
-
+        <div class="campo">
+          <label for="password">Contraseña</label>
           <input
-            type="text"
-            placeholder="Ej: García"
-            [(ngModel)]="usuario.primerApellido"
-            name="primerApellido"
-            (input)="limpiarError('primerApellido')"
+            id="password"
+            type="password"
+            placeholder="Crea una contraseña"
+            [(ngModel)]="usuario.password"
+            name="password"
+            (input)="limpiarError('password')"
           />
-
-          <small class="error">
-            {{ errores.primerApellido }}
-          </small>
+          <small class="error">{{ errores.password }}</small>
         </div>
 
-        <div>
-          <label>Segundo apellido</label>
+      </fieldset>
 
-          <input
-            type="text"
-            placeholder="Ej: Morales"
-            [(ngModel)]="usuario.segundoApellido"
-            name="segundoApellido"
-            (input)="limpiarError('segundoApellido')"
-          />
-
-          <small class="error">
-            {{ errores.segundoApellido }}
-          </small>
-        </div>
-
-      </div>
-
-      <label>Correo institucional</label>
-
-      <input
-        type="email"
-        placeholder="ejemplo@unitec.edu"
-        [(ngModel)]="usuario.correo"
-        name="correo"
-        (input)="limpiarError('correo')"
-      />
-
-      <small class="error">
-        {{ errores.correo }}
-      </small>
-
-      <label>Número de cuenta</label>
-
-      <input
-        type="number"
-        placeholder="20251001"
-        [(ngModel)]="usuario.numeroCuenta"
-        name="numeroCuenta"
-        (input)="limpiarError('numeroCuenta')"
-      />
-
-      <small class="error">
-        {{ errores.numeroCuenta }}
-      </small>
-
-      <label>Contraseña</label>
-
-      <input
-        type="password"
-        placeholder="Crea una contraseña"
-        [(ngModel)]="usuario.password"
-        name="password"
-        (input)="limpiarError('password')"
-      />
-
-      <small class="error">
-        {{ errores.password }}
-      </small>
-
-      <button
-        type="button"
-        (click)="registrarUsuario()"
-      >
+      <button type="button" (click)="registrarUsuario()">
         Registrarse
       </button>
 
     </form>
 
-    <span>
+    <p class="signup">
       ¿Ya tienes cuenta?
       <a routerLink="/login">Inicia sesión</a>
-    </span>
+    </p>
 
   </div>
 

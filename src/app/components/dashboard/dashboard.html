@@ -1,53 +1,77 @@
 <section class="dashboard-container">
   <div class="dashboard-card">
 
-    <h2>Reservar espacio</h2>
+    <h1>Reservar espacio</h1>
     <p>Selecciona un espacio y completa los datos</p>
 
-    <label>Espacio</label>
-    <select [(ngModel)]="reserva.espacio">
-      <option value="">Seleccione un espacio</option>
-      <option value="Salas de estudio">Salas de estudio</option>
-      <option value="Laboratorios">Laboratorios</option>
-      <option value="Zonas colaborativas">Zonas colaborativas</option>
-      <option value="Áreas de reunión">Áreas de reunión</option>
-    </select>
+    <form>
+      <fieldset>
+        <legend class="sr-only">Datos de la reserva</legend>
 
-    <label>Fecha</label>
-    <input
-      type="date"
-      [(ngModel)]="reserva.fecha"
-      [min]="fechaMinima"
-    >
+        <div class="campo">
+          <label for="espacio">Espacio</label>
+          <select
+            id="espacio"
+            [(ngModel)]="reserva.espacio"
+            name="espacio">
+            <option value="">Seleccione un espacio</option>
+            <option value="Salas de estudio">Salas de estudio</option>
+            <option value="Laboratorios">Laboratorios</option>
+            <option value="Zonas colaborativas">Zonas colaborativas</option>
+            <option value="Áreas de reunión">Áreas de reunión</option>
+          </select>
+        </div>
 
-    <label>Hora</label>
-    <input
-      type="time"
-      [(ngModel)]="reserva.hora"
-      min="07:00"
-      max="21:00"
-    >
+        <div class="campo">
+          <label for="fecha">Fecha</label>
+          <input
+            id="fecha"
+            type="date"
+            [(ngModel)]="reserva.fecha"
+            name="fecha"
+            [min]="fechaMinima"
+          >
+        </div>
 
-    <label>Duración (horas)</label>
-    <input
-      type="number"
-      min="1"
-      [(ngModel)]="reserva.duracion"
-    >
+        <div class="campo">
+          <label for="hora">Hora</label>
+          <input
+            id="hora"
+            type="time"
+            [(ngModel)]="reserva.hora"
+            name="hora"
+            min="07:00"
+            max="21:00"
+          >
+        </div>
 
-    <button
-      type="button"
-      (click)="guardarReserva()"
-      [disabled]="cargando()"
-    >
-      {{ cargando() ? 'Guardando...' : 'Reservar' }}
-    </button>
+        <div class="campo">
+          <label for="duracion">Duración (horas)</label>
+          <input
+            id="duracion"
+            type="number"
+            min="1"
+            [(ngModel)]="reserva.duracion"
+            name="duracion"
+          >
+        </div>
 
-    @if (mensaje()) {
-      <p class="error">
-        {{ mensaje() }}
-      </p>
-    }
+      </fieldset>
+
+      <button
+        type="button"
+        (click)="guardarReserva()"
+        [disabled]="cargando()">
+        {{ cargando() ? 'Guardando...' : 'Reservar' }}
+      </button>
+
+      @if (mensaje()) {
+        <p class="error" role="status">
+          {{ mensaje() }}
+        </p>
+      }
+
+    </form>
 
   </div>
 </section>

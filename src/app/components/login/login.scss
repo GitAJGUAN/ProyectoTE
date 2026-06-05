@@ -72,7 +72,7 @@
   justify-content: center;
 }
 
-.login-right h2 {
+.login-right h1 {
   margin-bottom: 25px;
 
   font-size: 28px;
@@ -82,6 +82,11 @@
 }
 
 form {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo {
   display: flex;
   flex-direction: column;
 }
@@ -184,7 +189,7 @@ button:hover {
     padding: 50px 40px;
   }
 
-  .login-right h2 {
+  .login-right h1 {
     text-align: left;
   }
 }
@@ -195,7 +200,7 @@ button:hover {
     max-width: 950px;
   }
 
-  .login-right h2 {
+  .login-right h1 {
     font-size: 32px;
   }
 }

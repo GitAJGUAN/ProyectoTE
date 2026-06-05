@@ -49,7 +49,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.auth-card h2 {
+.auth-card h1 {
   color: #111827;
 
   margin-bottom: 10px;
@@ -69,6 +69,27 @@
 
 /* FORMULARIO */
 form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* FIELDSET */
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 4px 0;
+}
+
+legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+.campo {
   display: flex;
   flex-direction: column;
 }
@@ -138,7 +159,7 @@ button:hover {
 }
 
 /* LINK */
-span {
+.signup {
   display: block;
 
   margin-top: 20px;
@@ -217,7 +238,7 @@ input[type="number"] {
     margin-top: 0;
   }
 
-  .auth-card h2 {
+  .auth-card h1 {
     font-size: 30px;
   }
 

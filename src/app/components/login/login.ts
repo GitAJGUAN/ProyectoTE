@@ -7,6 +7,7 @@ import { UsuariosService } from '../../services/usuarios';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [RouterLink, FormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -28,15 +29,24 @@ export class Login {
       return;
     }
 
+    console.log('Intentando login con:', this.correo);
+
     this.usuariosService
       .validarUsuario(this.correo, this.password)
-      .subscribe((usuarios) => {
-        if (usuarios.length > 0) {
-          localStorage.setItem('usuarioLogueado', JSON.stringify(usuarios[0]));
-          this.mensajeError = '';
-          this.router.navigate(['/home']);
-        } else {
-          this.mensajeError = 'Correo o contraseña incorrectos';
+      .subscribe({
+        next: (usuarios) => {
+          console.log('Usuarios encontrados:', usuarios);
+          if (usuarios.length > 0) {
+            localStorage.setItem('usuarioLogueado', JSON.stringify(usuarios[0]));
+            this.mensajeError = '';
+            this.router.navigate(['/home']);
+          } else {
+            this.mensajeError = 'Correo o contraseña incorrectos';
+          }
+        },
+        error: (error) => {
+          console.error('Error en validación:', error);
+          this.mensajeError = 'Error al validar usuario: ' + error.message;
         }
       });
   }

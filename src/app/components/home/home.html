@@ -60,4 +60,52 @@
 
   </div>
 
+  <!-- ESPACIOS DISPONIBLES CARDS -->
+  <div class="spaces-section">
+    <h2>Nuestros Espacios</h2>
+    <div class="spaces-grid">
+      
+      <div class="space-card" (click)="irAReservar('Salas de estudio')">
+        <div class="space-image">
+          <img src="/SalaEstudio.jpg" alt="Salas de estudio">
+        </div>
+        <div class="space-info">
+          <h3>Salas de Estudio</h3>
+          <p>Espacios tranquilos y equipados para concentrarte</p>
+        </div>
+      </div>
+
+      <div class="space-card" (click)="irAReservar('Laboratorios')">
+        <div class="space-image">
+          <img src="/Laboratorios.jpg" alt="Laboratorios">
+        </div>
+        <div class="space-info">
+          <h3>Laboratorios</h3>
+          <p>Equipos de tecnología avanzada para tus proyectos</p>
+        </div>
+      </div>
+
+      <div class="space-card" (click)="irAReservar('Zonas colaborativas')">
+        <div class="space-image">
+          <img src="/ZonaColaborativa.jpg" alt="Zonas colaborativas">
+        </div>
+        <div class="space-info">
+          <h3>Zonas Colaborativas</h3>
+          <p>Espacios para trabajar en equipo y crear juntos</p>
+        </div>
+      </div>
+
+      <div class="space-card" (click)="irAReservar('Áreas de reunión')">
+        <div class="space-image">
+          <img src="/AulaReunion.jpg" alt="Áreas de reunión">
+        </div>
+        <div class="space-info">
+          <h3>Áreas de Reunión</h3>
+          <p>Salas equipadas para tus juntas y presentaciones</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </section>

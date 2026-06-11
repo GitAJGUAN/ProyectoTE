@@ -2,136 +2,167 @@
 
   <div class="confirmacion-card">
 
-    <h1>Hoja de Confirmación</h1>
+    <h1>✅ Hoja de Confirmación</h1>
 
-    <p>
-      Consulta, edita o elimina tus reservas realizadas.
-    </p>
-
-    <!-- CONTADOR -->
-    <p class="contador" role="status">
-      Total de reservas: {{ reservas().length }}
-    </p>
-
-    <!-- SI NO HAY RESERVAS -->
-    @if (reservas().length === 0) {
-      <p class="mensaje">
-        No hay reservas registradas.
-      </p>
-    }
-
-    <!-- MENSAJE -->
-    @if (mensaje()) {
-      <p class="mensaje" role="status">
-        {{ mensaje() }}
-      </p>
-    }
-
-    <!-- LISTA DE RESERVAS -->
-    <ul class="reservas-lista">
-      @for (reserva of reservas(); track reserva.id) {
-        <li class="reserva">
-
-          <!-- VISTA NORMAL -->
-          @if (reservaEditando()?.id !== reserva.id) {
-            <h2>{{ reserva.espacio }}</h2>
-
-            <dl>
-              <div>
-                <dt>Fecha:</dt>
-                <dd>{{ reserva.fecha }}</dd>
-              </div>
-              <div>
-                <dt>Hora:</dt>
-                <dd>{{ reserva.hora }}</dd>
-              </div>
-              <div>
-                <dt>Duración:</dt>
-                <dd>{{ reserva.duracion }} hora(s)</dd>
-              </div>
-            </dl>
-
-            <div class="acciones">
-              <button type="button" (click)="editarReserva(reserva)">
-                Editar
-              </button>
-              <button type="button" class="eliminar" (click)="eliminarReserva(reserva.id!)">
-                Eliminar
-              </button>
+    <!-- RESERVA RECIENTE -->
+    @if (reserva(); as res) {
+      
+      <!-- VISTA NORMAL -->
+      @if (!reservaEditando()) {
+        <div class="reserva-resumen">
+          <h2>{{ res.espacio }}</h2>
+          
+          <div class="detalles">
+            <div class="detalle-item">
+              <span class="label">📅 Fecha:</span>
+              <span class="valor">{{ res.fecha }}</span>
             </div>
-          }
-
-          <!-- MODO EDICION -->
-          @if (reservaEditando()?.id === reserva.id) {
-            <form aria-label="Editar reserva">
-              <fieldset>
-                <legend>Editar reserva</legend>
-
-                <div>
-                  <label [attr.for]="'editar-espacio-' + reserva.id">Espacio</label>
-                  <select
-                    [id]="'editar-espacio-' + reserva.id"
-                    [(ngModel)]="reservaEditando()!.espacio"
-                    name="espacio">
-                    <option value="Salas de estudio">Salas de estudio</option>
-                    <option value="Laboratorios">Laboratorios</option>
-                    <option value="Zonas colaborativas">Zonas colaborativas</option>
-                    <option value="Áreas de reunión">Áreas de reunión</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label [attr.for]="'editar-fecha-' + reserva.id">Fecha</label>
-                  <input
-                    [id]="'editar-fecha-' + reserva.id"
-                    type="date"
-                    [(ngModel)]="reservaEditando()!.fecha"
-                    name="fecha">
-                </div>
-
-                <div>
-                  <label [attr.for]="'editar-hora-' + reserva.id">Hora</label>
-                  <input
-                    [id]="'editar-hora-' + reserva.id"
-                    type="time"
-                    [(ngModel)]="reservaEditando()!.hora"
-                    name="hora">
-                </div>
-
-                <div>
-                  <label [attr.for]="'editar-duracion-' + reserva.id">Duración</label>
-                  <input
-                    [id]="'editar-duracion-' + reserva.id"
-                    type="number"
-                    min="1"
-                    [(ngModel)]="reservaEditando()!.duracion"
-                    name="duracion">
-                </div>
-
-              </fieldset>
-
-              <div class="acciones">
-                <button type="button" (click)="guardarEdicion()">
-                  Guardar
-                </button>
-                <button type="button" class="cancelar" (click)="cancelarEdicion()">
-                  Cancelar
-                </button>
+            <div class="detalle-item">
+              <span class="label">🕐 Hora:</span>
+              <span class="valor">{{ res.hora }} - {{ calcularHoraFin(res.hora, res.duracion) }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="label">⏱️ Duración:</span>
+              <span class="valor">{{ res.duracion }} hora(s)</span>
+            </div>
+            @if (res.aula) {
+              <div class="detalle-item">
+                <span class="label">🏫 Aula:</span>
+                <span class="valor">{{ res.aula }}</span>
               </div>
-            </form>
+            }
+          </div>
+
+          @if (mensaje()) {
+            <p class="mensaje-exito" role="status">
+              ✅ {{ mensaje() }}
+            </p>
           }
 
-        </li>
+          <div class="acciones">
+            <button type="button" class="editar" (click)="editarReserva()">
+              ✏️ Editar Reserva
+            </button>
+            <button type="button" class="eliminar" (click)="eliminarReserva()">
+              🗑️ Eliminar
+            </button>
+            <button type="button" class="confirmar" (click)="irAMisReservas()">
+              → Ir a Mis Reservas
+            </button>
+          </div>
+        </div>
       }
-    </ul>
 
-    <!-- BOTON CONFIRMAR -->
-    @if (reservas().length > 0) {
-      <div class="boton-confirmar">
-        <button type="button" class="confirmar" (click)="confirmarReservaciones()">
-          Confirmar Reservaciones
-        </button>
-      </div>
+      <!-- MODO EDICION -->
+      @if (reservaEditando()) {
+        <form class="formulario-edicion">
+          <h2>Editar Reserva</h2>
+
+          <!-- FECHA -->
+          <div class="campo">
+            <label>Fecha</label>
+            <div class="fechas-grid">
+              @for (fecha of fechasProximas(); track fecha) {
+                <button
+                  type="button"
+                  class="fecha-btn"
+                  [class.seleccionada]="res.fecha === fecha"
+                  [class.ocupada]="esDiaOcupado(fecha)"
+                  (click)="seleccionarFecha(fecha)">
+                  <span class="fecha-dia">{{ fecha.split('-')[2] }}</span>
+                  <span class="fecha-mes">{{ obtenerNombreMes(fecha) }}</span>
+                  <span class="estado-fecha">
+                    @if (esDiaOcupado(fecha)) {
+                      ❌
+                    } @else {
+                      ✅
+                    }
+                  </span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- HORA -->
+          <div class="campo">
+            <label>Hora</label>
+            @if (horasParaFechaSeleccionada().length > 0) {
+              <div class="horas-grid">
+                @for (h of horasParaFechaSeleccionada(); track h.hora) {
+                  <button
+                    type="button"
+                    class="hora-btn"
+                    [class.seleccionada]="res.hora === h.hora"
+                    [class.disponible]="h.disponible"
+                    [class.ocupada]="!h.disponible"
+                    [disabled]="!h.disponible"
+                    (click)="seleccionarHora(h.hora)">
+                    {{ h.hora }}
+                    <span class="estado-hora">
+                      @if (h.disponible) {
+                        ✅
+                      } @else {
+                        ❌
+                      }
+                    </span>
+                  </button>
+                }
+              </div>
+            } @else {
+              <p class="info-text">Selecciona una fecha primero</p>
+            }
+          </div>
+
+          <!-- DURACION -->
+          <div class="campo">
+            <label for="duracion">Duración (horas)</label>
+            <div class="duracion-input-wrapper">
+              <input
+                id="duracion"
+                type="number"
+                min="1"
+                max="3"
+                [(ngModel)]="res.duracion"
+                name="duracion"
+              >
+              <span class="duracion-hint">Máximo 3 horas</span>
+            </div>
+          </div>
+
+          <!-- MENSAJES -->
+          @if (mensajeError()) {
+            <p class="mensaje-error" role="alert">
+              ❌ {{ mensajeError() }}
+            </p>
+          }
+
+          <!-- ACCIONES -->
+          <div class="acciones-edicion">
+            <button
+              type="button"
+              class="guardar"
+              (click)="guardarEdicion()"
+              [disabled]="cargando()">
+              {{ cargando() ? 'Guardando...' : '💾 Guardar Cambios' }}
+            </button>
+            <button
+              type="button"
+              class="cancelar"
+              (click)="cancelarEdicion()"
+              [disabled]="cargando()">
+              ❌ Cancelar
+            </button>
+          </div>
+        </form>
+      }
+
+    } @else {
+      <p class="sin-reserva">
+        No hay reserva para mostrar. Realiza una nueva reserva.
+      </p>
+      <button type="button" class="nueva-reserva" (click)="irAMisReservas()">
+        ← Volver a Mis Reservas
+      </button>
     }
 
   </div>

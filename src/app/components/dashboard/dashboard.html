@@ -1,77 +1,176 @@
 <section class="dashboard-container">
-  <div class="dashboard-card">
+  
+  <div class="dashboard-wrapper">
 
-    <h1>Reservar espacio</h1>
-    <p>Selecciona un espacio y completa los datos</p>
-
-    <form>
-      <fieldset>
-        <legend class="sr-only">Datos de la reserva</legend>
-
-        <div class="campo">
-          <label for="espacio">Espacio</label>
-          <select
-            id="espacio"
-            [(ngModel)]="reserva.espacio"
-            name="espacio">
-            <option value="">Seleccione un espacio</option>
-            <option value="Salas de estudio">Salas de estudio</option>
-            <option value="Laboratorios">Laboratorios</option>
-            <option value="Zonas colaborativas">Zonas colaborativas</option>
-            <option value="Áreas de reunión">Áreas de reunión</option>
-          </select>
-        </div>
-
-        <div class="campo">
-          <label for="fecha">Fecha</label>
-          <input
-            id="fecha"
-            type="date"
-            [(ngModel)]="reserva.fecha"
-            name="fecha"
-            [min]="fechaMinima"
-          >
-        </div>
-
-        <div class="campo">
-          <label for="hora">Hora</label>
-          <input
-            id="hora"
-            type="time"
-            [(ngModel)]="reserva.hora"
-            name="hora"
-            min="07:00"
-            max="21:00"
-          >
-        </div>
-
-        <div class="campo">
-          <label for="duracion">Duración (horas)</label>
-          <input
-            id="duracion"
-            type="number"
-            min="1"
-            [(ngModel)]="reserva.duracion"
-            name="duracion"
-          >
-        </div>
-
-      </fieldset>
-
-      <button
-        type="button"
-        (click)="guardarReserva()"
-        [disabled]="cargando()">
-        {{ cargando() ? 'Guardando...' : 'Reservar' }}
-      </button>
-
-      @if (mensaje()) {
-        <p class="error" role="status">
-          {{ mensaje() }}
+    <!-- COLUMNA IZQUIERDA: RESERVAS OCUPADAS -->
+    <div class="reservas-ocupadas-section">
+      <div class="reservas-header">
+        <h2>⏰ Horarios Ocupados</h2>
+        <p class="reservas-subtitle">
+          @if (reservasOcupadas().length > 0) {
+            {{ reservasOcupadas().length }} reserva(s) en este espacio
+          } @else {
+            Sin reservas - ¡Todos los horarios disponibles!
+          }
         </p>
+      </div>
+      
+      @if (reservasOcupadas().length > 0) {
+        <div class="reservas-list">
+          @for (res of reservasOcupadas(); track res.id) {
+            <div class="reserva-item" [style.border-left-color]="getColorByEspacio(res.espacio)">
+              <div class="reserva-content">
+                <div class="reserva-top">
+                  <span class="aula">{{ res.aula }}</span>
+                  <span class="fecha-badge">{{ formatearFecha(res.fecha) }}</span>
+                </div>
+                <div class="reserva-time">
+                  <span class="tiempo-icono">🕐</span>
+                  <span class="hora">{{ res.hora }} - {{ res.horaFin }}</span>
+                </div>
+              </div>
+              <div class="reserva-status">
+                <span class="ocupado">Ocupado</span>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="sin-reservas">
+          <span class="icono-vacio">✨</span>
+          <p>No hay reservas para este espacio</p>
+          <p class="subtext">Selecciona cualquier horario</p>
+        </div>
       }
+    </div>
 
-    </form>
+    <!-- COLUMNA DERECHA: FORMULARIO -->
+    <div class="dashboard-card">
+
+      <h1>Reservar espacio</h1>
+      <p>Selecciona un espacio y completa los datos</p>
+
+      <form>
+        <fieldset>
+          <legend class="sr-only">Datos de la reserva</legend>
+
+          <div class="campo">
+            <label for="espacio">Espacio</label>
+            <select
+              id="espacio"
+              [(ngModel)]="reserva.espacio"
+              (change)="onEspacioChange()"
+              name="espacio">
+              <option value="">Seleccione un espacio</option>
+              <option value="Salas de estudio">Salas de estudio</option>
+              <option value="Laboratorios">Laboratorios</option>
+              <option value="Zonas colaborativas">Zonas colaborativas</option>
+              <option value="Áreas de reunión">Áreas de reunión</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="aula">Aula / Sala</label>
+            <select
+              id="aula"
+              [(ngModel)]="reserva.aula"
+              name="aula"
+              (change)="onAulaChange()"
+              [disabled]="!reserva.espacio">
+              <option value="">Seleccione una aula</option>
+              @for (aula of aulasFiltradas(); track aula) {
+                <option [value]="aula">{{ aula }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="campo">
+            <label>Fecha</label>
+            <div class="fechas-grid">
+              @for (fecha of fechasProximas(); track fecha) {
+                <button
+                  type="button"
+                  class="fecha-btn"
+                  [class.seleccionada]="reserva.fecha === fecha"
+                  [class.ocupada]="esDiaOcupado(fecha)"
+                  (click)="seleccionarFecha(fecha); actualizarHorasParaFecha()">
+                  <span class="fecha-dia">{{ fecha.split('-')[2] }}</span>
+                  <span class="fecha-mes">{{ obtenerNombreMes(fecha) }}</span>
+                  <span class="estado-fecha">
+                    @if (esDiaOcupado(fecha)) {
+                      ❌
+                    } @else {
+                      ✅
+                    }
+                  </span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="campo">
+            <label>Hora</label>
+            @if (horasParaFechaSeleccionada().length > 0) {
+              <div class="horas-grid">
+                @for (h of horasParaFechaSeleccionada(); track h.hora) {
+                  <button
+                    type="button"
+                    class="hora-btn"
+                    [class.seleccionada]="reserva.hora === h.hora"
+                    [class.disponible]="h.disponible"
+                    [class.ocupada]="!h.disponible"
+                    [disabled]="!h.disponible"
+                    (click)="seleccionarHora(h.hora)">
+                    {{ h.hora }}
+                    <span class="estado-hora">
+                      @if (h.disponible) {
+                        ✅
+                      } @else {
+                        ❌
+                      }
+                    </span>
+                  </button>
+                }
+              </div>
+            } @else {
+              <p class="info-text">Selecciona una fecha primero</p>
+            }
+          </div>
+
+          <div class="campo">
+            <label for="duracion">Duración (horas)</label>
+            <div class="duracion-input-wrapper">
+              <input
+                id="duracion"
+                type="number"
+                min="1"
+                max="3"
+                [(ngModel)]="reserva.duracion"
+                name="duracion"
+              >
+              <span class="duracion-hint">Máximo 3 horas</span>
+            </div>
+          </div>
+
+        </fieldset>
+
+        <button
+          type="button"
+          (click)="guardarReserva()"
+          [disabled]="cargando()">
+          {{ cargando() ? 'Guardando...' : 'Reservar' }}
+        </button>
+
+        @if (mensaje()) {
+          <p class="error" role="status">
+            {{ mensaje() }}
+          </p>
+        }
+
+      </form>
+
+    </div>
 
   </div>
+
 </section>

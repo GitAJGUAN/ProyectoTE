@@ -18,9 +18,13 @@ export interface Reserva {
   id?: string;
   usuarioId?: string;
   espacio: string;
+  aula?: string;
   fecha: string;
   hora: string;
   duracion: number;
+  horaFin?: string;
+  solicitante?: string;
+  numeroCuenta?: number | string;
 }
 
 @Injectable({

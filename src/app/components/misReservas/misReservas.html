@@ -5,7 +5,7 @@
     <h1>Mis Reservas Confirmadas</h1>
 
     <p>
-      Aquí se encuentran todas tus reservas confirmadas. Puedes hacer nuevas reservas o volver al inicio.
+      Aqu&iacute; se encuentran todas tus reservas confirmadas. Puedes hacer nuevas reservas o volver al inicio.
     </p>
 
     <!-- CARGANDO -->
@@ -16,7 +16,7 @@
     <!-- SI NO HAY RESERVAS -->
     @if (!cargando() && reservas().length === 0) {
       <div class="sin-reservas">
-        <p>No tienes reservas confirmadas aún.</p>
+        <p>No tienes reservas confirmadas a&uacute;n.</p>
         <button type="button" class="hacer-reserva" (click)="hacerOtraReserva()">
           Hacer una Reserva
         </button>
@@ -29,27 +29,56 @@
         <p>Total de reservas confirmadas: <strong>{{ reservas().length }}</strong></p>
       </div>
 
+      @if (mensaje()) {
+        <p class="mensaje-exito" role="status">{{ mensaje() }}</p>
+      }
+
+      @if (error()) {
+        <p class="mensaje-error" role="alert">{{ error() }}</p>
+      }
+
       <ul class="reservas-list">
         @for (reserva of reservas(); track reserva.id) {
           <li class="reserva-item">
             <div class="reserva-header">
               <h2>{{ reserva.espacio }}</h2>
-              <span class="estado">✓ Confirmada</span>
+              <div class="reserva-acciones">
+                <span class="estado">Confirmada</span>
+                <button
+                  type="button"
+                  class="eliminar-reserva"
+                  (click)="eliminarReserva(reserva)"
+                  [disabled]="eliminandoId() === reserva.id">
+                  {{ eliminandoId() === reserva.id ? 'Eliminando...' : 'Eliminar reserva' }}
+                </button>
+              </div>
             </div>
-            <dl class="reserva-detalles">
+            <div class="reserva-detalles">
               <div class="detalle">
-                <dt>Fecha:</dt>
-                <dd>{{ reserva.fecha }}</dd>
+                <span class="detalle-label">Aula / Sala</span>
+                <span class="detalle-valor">{{ reserva.aula || 'Sin aula asignada' }}</span>
               </div>
               <div class="detalle">
-                <dt>Hora:</dt>
-                <dd>{{ reserva.hora }}</dd>
+                <span class="detalle-label">Fecha</span>
+                <span class="detalle-valor">{{ reserva.fecha }}</span>
               </div>
               <div class="detalle">
-                <dt>Duración:</dt>
-                <dd>{{ reserva.duracion }} hora(s)</dd>
+                <span class="detalle-label">Horario</span>
+                <span class="detalle-valor">{{ reserva.hora }} - {{ $any(reserva).horaFin }}</span>
               </div>
-            </dl>
+              <div class="detalle">
+                <span class="detalle-label">Duraci&oacute;n</span>
+                <span class="detalle-valor">{{ reserva.duracion }} hora(s)</span>
+              </div>
+              <div class="detalle">
+                <span class="detalle-label">Solicitante</span>
+                <span class="detalle-valor">{{ $any(reserva).solicitante }}</span>
+              </div>
+              <div class="detalle">
+                <span class="detalle-label">N&uacute;mero de cuenta</span>
+                <span class="detalle-valor">{{ $any(reserva).numeroCuenta }}</span>
+              </div>
+            </div>
           </li>
         }
       </ul>

@@ -77,6 +77,27 @@
       }
     }
 
+    .mensaje-exito,
+    .mensaje-error {
+      padding: 0.9rem 1rem;
+      border-radius: 6px;
+      margin: 0 0 1.25rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .mensaje-exito {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #b7dfc0;
+    }
+
+    .mensaje-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f1b0b7;
+    }
+
     .reservas-list {
       display: flex;
       flex-direction: column;
@@ -116,6 +137,37 @@
             font-size: 0.85rem;
             font-weight: 600;
           }
+
+          .reserva-acciones {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.6rem;
+          }
+
+          .eliminar-reserva {
+            width: 100%;
+            min-width: 150px;
+            padding: 0.55rem 0.9rem;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.3s ease, color 0.3s ease;
+
+            &:hover:not(:disabled) {
+              background: #f1b0b7;
+              color: #5f161d;
+            }
+
+            &:disabled {
+              opacity: 0.65;
+              cursor: not-allowed;
+            }
+          }
         }
 
         .reserva-detalles {
@@ -127,15 +179,18 @@
             display: flex;
             flex-direction: column;
 
-            strong {
+            .detalle-label {
               color: #8b1538;
               margin-bottom: 0.25rem;
               font-size: 0.9rem;
+              font-weight: 700;
             }
 
-            span {
+            .detalle-valor {
               color: #333;
               font-size: 1rem;
+              margin: 0;
+              font-weight: 600;
             }
           }
         }

@@ -1,51 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
 
 import {
   ReservasService,
   Reserva
 } from '../../services/reservas';
 
-import { FullCalendarModule } from '@fullcalendar/angular';
-
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-
-import { CalendarOptions } from '@fullcalendar/core';
-
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    RouterLink,
-    FullCalendarModule
+    RouterLink
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
 export class Home implements OnInit {
 
-  calendarOptions: CalendarOptions = {
+  calendarOptions: any = {
     initialView: 'timeGridWeek',
-
-    plugins: [
-      dayGridPlugin,
-      timeGridPlugin,
-      interactionPlugin
-    ],
-
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
-
     events: []
   };
 
   constructor(
-    private reservasService: ReservasService
+    private reservasService: ReservasService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -107,21 +92,18 @@ export class Home implements OnInit {
 
         this.calendarOptions = {
           initialView: 'timeGridWeek',
-
-          plugins: [
-            dayGridPlugin,
-            timeGridPlugin,
-            interactionPlugin
-          ],
-
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           },
-
           events: [...eventos]
         };
       });
+  }
+
+  irAReservar(espacio: string) {
+    localStorage.setItem('espacioSeleccionado', espacio);
+    this.router.navigate(['/dashboard']);
   }
 }

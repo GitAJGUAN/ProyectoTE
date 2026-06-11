@@ -1,8 +1,6 @@
-/* =========================
-   CONTENEDOR PRINCIPAL
-========================= */
+/* CONTENEDOR PRINCIPAL */
 .confirmacion-container {
-  min-height: 100%;
+  min-height: calc(100dvh - 64px);
   width: 100%;
 
   background:
@@ -21,229 +19,358 @@
   padding: 30px 20px;
 }
 
-/* =========================
-   TARJETA PRINCIPAL
-========================= */
+/* TARJETA PRINCIPAL */
 .confirmacion-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 600px;
 
   background: white;
 
-  padding: 25px 20px;
+  padding: 30px 24px;
 
   border-radius: 18px;
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* =========================
-   TITULOS
-========================= */
-.confirmacion-card h2 {
+.confirmacion-card h1 {
+  text-align: center;
+  font-size: 28px;
   color: #111827;
-  margin-bottom: 10px;
-  font-size: 24px;
-  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 700;
 }
 
-.confirmacion-card > p {
-  color: #6b7280;
-  margin-bottom: 20px;
-  text-align: center;
-  line-height: 1.5;
-}
-
-/* =========================
-   CONTADOR
-========================= */
-.contador {
-  background: #f0fdf4;
-  border-left: 4px solid #059669;
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 18px;
-  color: #166534;
-  font-weight: 600;
-}
-
-/* =========================
-   MENSAJE
-========================= */
-.mensaje {
+.confirmacion-card h2 {
   color: #2563eb;
-  font-weight: bold;
-  margin-bottom: 18px;
-  text-align: center;
+  margin-bottom: 15px;
+  font-size: 22px;
+  font-weight: 700;
 }
 
-/* =========================
-   TARJETA DE RESERVA
-========================= */
-.reserva {
-  background: #f3f4f6;
+/* RESUMEN DE RESERVA */
+.reserva-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.detalles {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  background: #f9fafb;
   padding: 18px;
   border-radius: 12px;
-  margin-bottom: 15px;
+
+  border-left: 5px solid #10b981;
 }
 
-.reserva h3 {
-  color: #2563eb;
-  margin-bottom: 10px;
-  font-size: 18px;
+.detalle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px 0;
 }
 
-.reserva p {
-  margin-bottom: 6px;
-  color: #374151;
-  line-height: 1.5;
-}
-
-/* =========================
-   FORMULARIOS
-========================= */
-label {
-  display: block;
-  margin-bottom: 6px;
+.label {
   font-weight: 600;
-  color: #374151;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 11px;
-  margin-bottom: 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  outline: none;
+  color: #6b7280;
   font-size: 14px;
 }
 
-input:focus,
-select:focus {
-  border-color: #2563eb;
+.valor {
+  color: #111827;
+  font-weight: 700;
+  font-size: 15px;
 }
 
-/* =========================
-   ACCIONES
-========================= */
-.acciones {
+/* MENSAJE EXITO */
+.mensaje-exito {
+  background: #ecfdf5;
+  border: 2px solid #10b981;
+  color: #047857;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+.mensaje-error {
+  background: #fee2e2;
+  border: 2px solid #dc2626;
+  color: #dc2626;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 18px 0;
+}
+
+/* BOTONES ACCIONES */
+.acciones,
+.acciones-edicion {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 14px;
 }
 
-/* =========================
-   BOTONES
-========================= */
 button {
-  width: 100%;
-  padding: 11px 14px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 9px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-button:hover {
-  opacity: 0.92;
-}
-
-.eliminar {
-  background: #dc2626;
-}
-
-.cancelar {
-  background: #6b7280;
-}
-
-/* =========================
-   BOTON CONFIRMAR
-========================= */
-.boton-confirmar {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #e5e7eb;
-}
-
-.confirmar {
-  width: 100%;
-  padding: 13px 20px;
-  background: #059669;
-  color: white;
-  font-size: 15px;
-  font-weight: 700;
+  padding: 12px 14px;
   border: none;
   border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.confirmar:hover {
-  background: #047857;
+.editar,
+.confirmar,
+.guardar {
+  background: #2563eb;
+  color: white;
 }
 
-/* ==================================================
-   480px
-================================================== */
-@media (min-width: 480px) {
-  .confirmacion-container {
-    padding: 30px;
-  }
-
-  .confirmacion-card {
-    padding: 30px;
-  }
+.editar:hover,
+.confirmar:hover,
+.guardar:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
 }
 
-/* ==================================================
-   768px
-================================================== */
+.eliminar,
+.cancelar {
+  background: #fecaca;
+  color: #dc2626;
+}
+
+.eliminar:hover,
+.cancelar:hover {
+  background: #fca5a5;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* FORMULARIO EDICION */
+.formulario-edicion {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.campo label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* GRID FECHAS */
+.fechas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.fecha-btn {
+  padding: 10px 8px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #111827;
+  transition: all 0.3s ease;
+}
+
+.fecha-dia {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.fecha-mes {
+  font-size: 10px;
+  color: #6b7280;
+}
+
+.estado-fecha {
+  font-size: 11px;
+}
+
+.fecha-btn:hover:not(.ocupada) {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.fecha-btn.seleccionada {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.fecha-btn.seleccionada .fecha-mes {
+  color: #d1fae5;
+}
+
+.fecha-btn.ocupada {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+/* GRID HORAS */
+.horas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.hora-btn {
+  padding: 10px 8px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #111827;
+  transition: all 0.3s ease;
+}
+
+.estado-hora {
+  font-size: 11px;
+}
+
+.hora-btn.disponible {
+  color: #10b981;
+}
+
+.hora-btn.disponible:hover {
+  background: #ecfdf5;
+  border-color: #10b981;
+}
+
+.hora-btn.seleccionada {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.hora-btn.ocupada {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.info-text {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+  font-style: italic;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 10px;
+  margin: 0;
+}
+
+/* DURACION */
+.duracion-input-wrapper {
+  position: relative;
+}
+
+.duracion-input-wrapper input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.duracion-input-wrapper input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.duracion-hint {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* MENSAJES */
+.sin-reserva {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 15px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.nueva-reserva {
+  width: 100%;
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.nueva-reserva:hover {
+  background: #1d4ed8;
+}
+
+/* RESPONSIVE */
 @media (min-width: 768px) {
   .confirmacion-card {
-    max-width: 650px;
-    padding: 35px;
+    max-width: 700px;
+    padding: 35px 30px;
   }
 
-  .confirmacion-card h2 {
-    font-size: 30px;
-    text-align: left;
+  .fechas-grid,
+  .horas-grid {
+    grid-template-columns: repeat(7, 1fr);
   }
 
-  .confirmacion-card > p {
-    text-align: left;
-  }
-
-  .acciones {
+  .acciones,
+  .acciones-edicion {
     flex-direction: row;
   }
 
   button {
-    width: auto;
-  }
-
-  .confirmar {
-    width: auto;
-    padding: 13px 40px;
-  }
-}
-
-/* ==================================================
-   1024px
-================================================== */
-@media (min-width: 1024px) {
-  .confirmacion-card {
-    max-width: 720px;
-  }
-
-  .confirmacion-card h2 {
-    font-size: 34px;
+    flex: 1;
   }
 }

@@ -13,7 +13,7 @@
 
       <div class="buttons">
 
-        <a routerLink="/dashboard" class="btn primary">
+        <a routerLink="/dashboard" class="btn primary" aria-label="Ir a reservar un espacio">
           Reservar Espacio
         </a>
 
@@ -21,28 +21,28 @@
 
     </div>
 
-    <div class="hero-card">
+    <div class="hero-card" aria-label="Resumen de espacios disponibles" role="region">
 
       <h3>Espacios disponibles</h3>
 
       <div class="item">
         <span>Salas de estudio</span>
-        <span class="numero">3</span>
+        <span class="numero" aria-label="3 salas de estudio disponibles">3</span>
       </div>
 
       <div class="item">
         <span>Laboratorios</span>
-        <span class="numero">1</span>
+        <span class="numero" aria-label="1 laboratorio disponible">1</span>
       </div>
 
       <div class="item">
         <span>Zonas colaborativas</span>
-        <span class="numero">2</span>
+        <span class="numero" aria-label="2 zonas colaborativas disponibles">2</span>
       </div>
 
       <div class="item">
         <span>Áreas de reunión</span>
-        <span class="numero">4</span>
+        <span class="numero" aria-label="4 áreas de reunión disponibles">4</span>
       </div>
 
     </div>
@@ -50,7 +50,7 @@
   </div>
 
   <!-- CALENDARIO -->
-  <div class="calendar-section">
+  <div class="calendar-section" role="region" aria-label="Calendario de reservas">
 
     <h2>Calendario de Reservas</h2>
 
@@ -61,11 +61,18 @@
   </div>
 
   <!-- ESPACIOS DISPONIBLES CARDS -->
-  <div class="spaces-section">
+  <div class="spaces-section" role="region" aria-label="Nuestros espacios">
     <h2>Nuestros Espacios</h2>
     <div class="spaces-grid">
-      
-      <div class="space-card" (click)="irAReservar('Salas de estudio')">
+
+      <div
+        class="space-card"
+        role="button"
+        tabindex="0"
+        aria-label="Reservar Salas de Estudio"
+        (click)="irAReservar('Salas de estudio')"
+        (keydown.enter)="irAReservar('Salas de estudio')"
+        (keydown.space)="irAReservar('Salas de estudio')">
         <div class="space-image">
           <img src="/SalaEstudio.jpg" alt="Salas de estudio">
         </div>
@@ -75,7 +82,14 @@
         </div>
       </div>
 
-      <div class="space-card" (click)="irAReservar('Laboratorios')">
+      <div
+        class="space-card"
+        role="button"
+        tabindex="0"
+        aria-label="Reservar Laboratorios"
+        (click)="irAReservar('Laboratorios')"
+        (keydown.enter)="irAReservar('Laboratorios')"
+        (keydown.space)="irAReservar('Laboratorios')">
         <div class="space-image">
           <img src="/Laboratorios.jpg" alt="Laboratorios">
         </div>
@@ -85,7 +99,14 @@
         </div>
       </div>
 
-      <div class="space-card" (click)="irAReservar('Zonas colaborativas')">
+      <div
+        class="space-card"
+        role="button"
+        tabindex="0"
+        aria-label="Reservar Zonas Colaborativas"
+        (click)="irAReservar('Zonas colaborativas')"
+        (keydown.enter)="irAReservar('Zonas colaborativas')"
+        (keydown.space)="irAReservar('Zonas colaborativas')">
         <div class="space-image">
           <img src="/ZonaColaborativa.jpg" alt="Zonas colaborativas">
         </div>
@@ -95,7 +116,14 @@
         </div>
       </div>
 
-      <div class="space-card" (click)="irAReservar('Áreas de reunión')">
+      <div
+        class="space-card"
+        role="button"
+        tabindex="0"
+        aria-label="Reservar Áreas de Reunión"
+        (click)="irAReservar('Áreas de reunión')"
+        (keydown.enter)="irAReservar('Áreas de reunión')"
+        (keydown.space)="irAReservar('Áreas de reunión')">
         <div class="space-image">
           <img src="/AulaReunion.jpg" alt="Áreas de reunión">
         </div>

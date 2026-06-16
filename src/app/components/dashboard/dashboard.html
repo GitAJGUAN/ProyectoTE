@@ -3,10 +3,10 @@
   <div class="dashboard-wrapper">
 
     <!-- COLUMNA IZQUIERDA: RESERVAS OCUPADAS -->
-    <div class="reservas-ocupadas-section">
+    <div class="reservas-ocupadas-section" role="region" aria-label="Horarios ocupados">
       <div class="reservas-header">
         <h2>⏰ Horarios Ocupados</h2>
-        <p class="reservas-subtitle">
+        <p class="reservas-subtitle" aria-live="polite">
           @if (reservasOcupadas().length > 0) {
             {{ reservasOcupadas().length }} reserva(s) en este espacio
           } @else {
@@ -16,16 +16,16 @@
       </div>
       
       @if (reservasOcupadas().length > 0) {
-        <div class="reservas-list">
+        <div class="reservas-list" role="list" aria-label="Lista de horarios ocupados">
           @for (res of reservasOcupadas(); track res.id) {
-            <div class="reserva-item" [style.border-left-color]="getColorByEspacio(res.espacio)">
+            <div class="reserva-item" role="listitem" [style.border-left-color]="getColorByEspacio(res.espacio)">
               <div class="reserva-content">
                 <div class="reserva-top">
                   <span class="aula">{{ res.aula }}</span>
                   <span class="fecha-badge">{{ formatearFecha(res.fecha) }}</span>
                 </div>
                 <div class="reserva-time">
-                  <span class="tiempo-icono">🕐</span>
+                  <span class="tiempo-icono" aria-hidden="true">🕐</span>
                   <span class="hora">{{ res.hora }} - {{ res.horaFin }}</span>
                 </div>
               </div>
@@ -37,7 +37,7 @@
         </div>
       } @else {
         <div class="sin-reservas">
-          <span class="icono-vacio">✨</span>
+          <span class="icono-vacio" aria-hidden="true">✨</span>
           <p>No hay reservas para este espacio</p>
           <p class="subtext">Selecciona cualquier horario</p>
         </div>
@@ -50,7 +50,7 @@
       <h1>Reservar espacio</h1>
       <p>Selecciona un espacio y completa los datos</p>
 
-      <form>
+      <form aria-label="Formulario de reserva de espacio">
         <fieldset>
           <legend class="sr-only">Datos de la reserva</legend>
 
@@ -60,7 +60,8 @@
               id="espacio"
               [(ngModel)]="reserva.espacio"
               (change)="onEspacioChange()"
-              name="espacio">
+              name="espacio"
+              aria-required="true">
               <option value="">Seleccione un espacio</option>
               <option value="Salas de estudio">Salas de estudio</option>
               <option value="Laboratorios">Laboratorios</option>
@@ -76,7 +77,9 @@
               [(ngModel)]="reserva.aula"
               name="aula"
               (change)="onAulaChange()"
-              [disabled]="!reserva.espacio">
+              [disabled]="!reserva.espacio"
+              aria-required="true"
+              [attr.aria-disabled]="!reserva.espacio ? 'true' : null">
               <option value="">Seleccione una aula</option>
               @for (aula of aulasFiltradas(); track aula) {
                 <option [value]="aula">{{ aula }}</option>
@@ -85,18 +88,21 @@
           </div>
 
           <div class="campo">
-            <label>Fecha</label>
-            <div class="fechas-grid">
+            <label id="label-fecha">Fecha</label>
+            <div class="fechas-grid" role="group" aria-labelledby="label-fecha">
               @for (fecha of fechasProximas(); track fecha) {
                 <button
                   type="button"
                   class="fecha-btn"
                   [class.seleccionada]="reserva.fecha === fecha"
                   [class.ocupada]="esDiaOcupado(fecha)"
+                  [attr.aria-pressed]="reserva.fecha === fecha"
+                  [attr.aria-disabled]="esDiaOcupado(fecha) ? 'true' : null"
+                  [attr.aria-label]="fecha + (esDiaOcupado(fecha) ? ', día ocupado' : ', día disponible')"
                   (click)="seleccionarFecha(fecha); actualizarHorasParaFecha()">
                   <span class="fecha-dia">{{ fecha.split('-')[2] }}</span>
                   <span class="fecha-mes">{{ obtenerNombreMes(fecha) }}</span>
-                  <span class="estado-fecha">
+                  <span class="estado-fecha" aria-hidden="true">
                     @if (esDiaOcupado(fecha)) {
                       ❌
                     } @else {
@@ -109,9 +115,9 @@
           </div>
 
           <div class="campo">
-            <label>Hora</label>
+            <label id="label-hora">Hora</label>
             @if (horasParaFechaSeleccionada().length > 0) {
-              <div class="horas-grid">
+              <div class="horas-grid" role="group" aria-labelledby="label-hora">
                 @for (h of horasParaFechaSeleccionada(); track h.hora) {
                   <button
                     type="button"
@@ -120,9 +126,11 @@
                     [class.disponible]="h.disponible"
                     [class.ocupada]="!h.disponible"
                     [disabled]="!h.disponible"
+                    [attr.aria-pressed]="reserva.hora === h.hora"
+                    [attr.aria-label]="h.hora + (h.disponible ? ', disponible' : ', ocupada')"
                     (click)="seleccionarHora(h.hora)">
                     {{ h.hora }}
-                    <span class="estado-hora">
+                    <span class="estado-hora" aria-hidden="true">
                       @if (h.disponible) {
                         ✅
                       } @else {
@@ -147,8 +155,10 @@
                 max="3"
                 [(ngModel)]="reserva.duracion"
                 name="duracion"
+                aria-required="true"
+                aria-describedby="duracion-hint"
               >
-              <span class="duracion-hint">Máximo 3 horas</span>
+              <span id="duracion-hint" class="duracion-hint">Máximo 3 horas</span>
             </div>
           </div>
 
@@ -157,12 +167,14 @@
         <button
           type="button"
           (click)="guardarReserva()"
-          [disabled]="cargando()">
+          [disabled]="cargando()"
+          [attr.aria-disabled]="cargando() ? 'true' : null"
+          aria-label="Guardar reserva">
           {{ cargando() ? 'Guardando...' : 'Reservar' }}
         </button>
 
         @if (mensaje()) {
-          <p class="error" role="status">
+          <p class="error" role="status" aria-live="polite">
             {{ mensaje() }}
           </p>
         }

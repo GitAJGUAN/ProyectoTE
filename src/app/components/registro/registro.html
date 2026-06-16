@@ -8,11 +8,15 @@
 
     <p>Regístrate para gestionar tus reservas.</p>
 
-    <p class="exito" *ngIf="mensajeExito">
+    <p
+      class="exito"
+      role="status"
+      aria-live="polite"
+      *ngIf="mensajeExito">
       {{ mensajeExito }}
     </p>
 
-    <form>
+    <form aria-label="Formulario de registro de usuario">
 
       <fieldset>
         <legend>Nombres</legend>
@@ -27,9 +31,12 @@
               placeholder="Ej: Brad"
               [(ngModel)]="usuario.primerNombre"
               name="primerNombre"
+              aria-required="true"
+              [attr.aria-invalid]="errores.primerNombre ? 'true' : null"
+              aria-describedby="error-primerNombre"
               (input)="limpiarError('primerNombre')"
             />
-            <small class="error">{{ errores.primerNombre }}</small>
+            <small id="error-primerNombre" class="error" aria-live="polite">{{ errores.primerNombre }}</small>
           </div>
 
           <div class="campo">
@@ -40,9 +47,11 @@
               placeholder="Ej: Carlos"
               [(ngModel)]="usuario.segundoNombre"
               name="segundoNombre"
+              [attr.aria-invalid]="errores.segundoNombre ? 'true' : null"
+              aria-describedby="error-segundoNombre"
               (input)="limpiarError('segundoNombre')"
             />
-            <small class="error">{{ errores.segundoNombre }}</small>
+            <small id="error-segundoNombre" class="error" aria-live="polite">{{ errores.segundoNombre }}</small>
           </div>
 
         </div>
@@ -61,9 +70,12 @@
               placeholder="Ej: García"
               [(ngModel)]="usuario.primerApellido"
               name="primerApellido"
+              aria-required="true"
+              [attr.aria-invalid]="errores.primerApellido ? 'true' : null"
+              aria-describedby="error-primerApellido"
               (input)="limpiarError('primerApellido')"
             />
-            <small class="error">{{ errores.primerApellido }}</small>
+            <small id="error-primerApellido" class="error" aria-live="polite">{{ errores.primerApellido }}</small>
           </div>
 
           <div class="campo">
@@ -74,9 +86,11 @@
               placeholder="Ej: Morales"
               [(ngModel)]="usuario.segundoApellido"
               name="segundoApellido"
+              [attr.aria-invalid]="errores.segundoApellido ? 'true' : null"
+              aria-describedby="error-segundoApellido"
               (input)="limpiarError('segundoApellido')"
             />
-            <small class="error">{{ errores.segundoApellido }}</small>
+            <small id="error-segundoApellido" class="error" aria-live="polite">{{ errores.segundoApellido }}</small>
           </div>
 
         </div>
@@ -93,9 +107,12 @@
             placeholder="ejemplo@unitec.edu"
             [(ngModel)]="usuario.correo"
             name="correo"
+            aria-required="true"
+            [attr.aria-invalid]="errores.correo ? 'true' : null"
+            aria-describedby="error-correo"
             (input)="limpiarError('correo')"
           />
-          <small class="error">{{ errores.correo }}</small>
+          <small id="error-correo" class="error" aria-live="polite">{{ errores.correo }}</small>
         </div>
 
         <div class="campo">
@@ -106,9 +123,12 @@
             placeholder="20251001"
             [(ngModel)]="usuario.numeroCuenta"
             name="numeroCuenta"
+            aria-required="true"
+            [attr.aria-invalid]="errores.numeroCuenta ? 'true' : null"
+            aria-describedby="error-numeroCuenta"
             (input)="limpiarError('numeroCuenta')"
           />
-          <small class="error">{{ errores.numeroCuenta }}</small>
+          <small id="error-numeroCuenta" class="error" aria-live="polite">{{ errores.numeroCuenta }}</small>
         </div>
 
         <div class="campo">
@@ -119,9 +139,12 @@
             placeholder="Crea una contraseña"
             [(ngModel)]="usuario.password"
             name="password"
+            aria-required="true"
+            [attr.aria-invalid]="errores.password ? 'true' : null"
+            aria-describedby="error-password"
             (input)="limpiarError('password')"
           />
-          <small class="error">{{ errores.password }}</small>
+          <small id="error-password" class="error" aria-live="polite">{{ errores.password }}</small>
         </div>
 
       </fieldset>

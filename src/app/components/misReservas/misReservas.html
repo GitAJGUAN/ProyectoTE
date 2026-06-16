@@ -5,19 +5,19 @@
     <h1>Mis Reservas Confirmadas</h1>
 
     <p>
-      Aqu&iacute; se encuentran todas tus reservas confirmadas. Puedes hacer nuevas reservas o volver al inicio.
+      Aquí se encuentran todas tus reservas confirmadas. Puedes hacer nuevas reservas o volver al inicio.
     </p>
 
     <!-- CARGANDO -->
     @if (cargando()) {
-      <p class="cargando" role="status">Cargando tus reservas...</p>
+      <p class="cargando" role="status" aria-live="polite" aria-busy="true">Cargando tus reservas...</p>
     }
 
     <!-- SI NO HAY RESERVAS -->
     @if (!cargando() && reservas().length === 0) {
-      <div class="sin-reservas">
-        <p>No tienes reservas confirmadas a&uacute;n.</p>
-        <button type="button" class="hacer-reserva" (click)="hacerOtraReserva()">
+      <div class="sin-reservas" role="status" aria-live="polite">
+        <p>No tienes reservas confirmadas aún.</p>
+        <button type="button" class="hacer-reserva" (click)="hacerOtraReserva()" aria-label="Ir a hacer una reserva">
           Hacer una Reserva
         </button>
       </div>
@@ -25,30 +25,33 @@
 
     <!-- LISTA DE RESERVAS -->
     @if (!cargando() && reservas().length > 0) {
-      <div class="contador">
+      <div class="contador" aria-live="polite">
         <p>Total de reservas confirmadas: <strong>{{ reservas().length }}</strong></p>
       </div>
 
       @if (mensaje()) {
-        <p class="mensaje-exito" role="status">{{ mensaje() }}</p>
+        <p class="mensaje-exito" role="status" aria-live="polite">{{ mensaje() }}</p>
       }
 
       @if (error()) {
-        <p class="mensaje-error" role="alert">{{ error() }}</p>
+        <p class="mensaje-error" role="alert" aria-live="assertive">{{ error() }}</p>
       }
 
-      <ul class="reservas-list">
+      <ul class="reservas-list" aria-label="Lista de mis reservas confirmadas">
         @for (reserva of reservas(); track reserva.id) {
           <li class="reserva-item">
             <div class="reserva-header">
               <h2>{{ reserva.espacio }}</h2>
-              <div class="reserva-acciones">
-                <span class="estado">Confirmada</span>
+              <div class="reserva-acciones" role="group" [attr.aria-label]="'Acciones para reserva de ' + reserva.espacio + ' el ' + reserva.fecha">
+                <span class="estado" aria-label="Estado: Confirmada">Confirmada</span>
                 <button
                   type="button"
                   class="eliminar-reserva"
                   (click)="eliminarReserva(reserva)"
-                  [disabled]="eliminandoId() === reserva.id">
+                  [disabled]="eliminandoId() === reserva.id"
+                  [attr.aria-disabled]="eliminandoId() === reserva.id ? 'true' : null"
+                  [attr.aria-label]="'Eliminar reserva de ' + reserva.espacio + ' del ' + reserva.fecha + ' a las ' + reserva.hora"
+                  [attr.aria-busy]="eliminandoId() === reserva.id ? 'true' : null">
                   {{ eliminandoId() === reserva.id ? 'Eliminando...' : 'Eliminar reserva' }}
                 </button>
               </div>
@@ -67,7 +70,7 @@
                 <span class="detalle-valor">{{ reserva.hora }} - {{ $any(reserva).horaFin }}</span>
               </div>
               <div class="detalle">
-                <span class="detalle-label">Duraci&oacute;n</span>
+                <span class="detalle-label">Duración</span>
                 <span class="detalle-valor">{{ reserva.duracion }} hora(s)</span>
               </div>
               <div class="detalle">
@@ -75,7 +78,7 @@
                 <span class="detalle-valor">{{ $any(reserva).solicitante }}</span>
               </div>
               <div class="detalle">
-                <span class="detalle-label">N&uacute;mero de cuenta</span>
+                <span class="detalle-label">Número de cuenta</span>
                 <span class="detalle-valor">{{ $any(reserva).numeroCuenta }}</span>
               </div>
             </div>
@@ -83,11 +86,11 @@
         }
       </ul>
 
-      <div class="acciones-finales">
-        <button type="button" class="hacer-otra" (click)="hacerOtraReserva()">
+      <div class="acciones-finales" role="group" aria-label="Acciones finales">
+        <button type="button" class="hacer-otra" (click)="hacerOtraReserva()" aria-label="Ir a hacer otra reserva">
           Hacer Otra Reserva
         </button>
-        <button type="button" class="volver" (click)="volverAtras()">
+        <button type="button" class="volver" (click)="volverAtras()" aria-label="Volver al inicio">
           Volver al Inicio
         </button>
       </div>

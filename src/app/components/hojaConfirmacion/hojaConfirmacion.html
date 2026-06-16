@@ -9,7 +9,7 @@
       
       <!-- VISTA NORMAL -->
       @if (!reservaEditando()) {
-        <div class="reserva-resumen">
+        <div class="reserva-resumen" role="region" aria-label="Detalle de la reserva confirmada">
           <h2>{{ res.espacio }}</h2>
           
           <div class="detalles">
@@ -34,19 +34,19 @@
           </div>
 
           @if (mensaje()) {
-            <p class="mensaje-exito" role="status">
+            <p class="mensaje-exito" role="status" aria-live="polite">
               ✅ {{ mensaje() }}
             </p>
           }
 
-          <div class="acciones">
-            <button type="button" class="editar" (click)="editarReserva()">
+          <div class="acciones" role="group" aria-label="Acciones de la reserva">
+            <button type="button" class="editar" (click)="editarReserva()" aria-label="Editar esta reserva">
               ✏️ Editar Reserva
             </button>
-            <button type="button" class="eliminar" (click)="eliminarReserva()">
+            <button type="button" class="eliminar" (click)="eliminarReserva()" aria-label="Eliminar esta reserva">
               🗑️ Eliminar
             </button>
-            <button type="button" class="confirmar" (click)="irAMisReservas()">
+            <button type="button" class="confirmar" (click)="irAMisReservas()" aria-label="Ir a la lista de mis reservas">
               → Ir a Mis Reservas
             </button>
           </div>
@@ -55,23 +55,26 @@
 
       <!-- MODO EDICION -->
       @if (reservaEditando()) {
-        <form class="formulario-edicion">
+        <form class="formulario-edicion" aria-label="Formulario de edición de reserva">
           <h2>Editar Reserva</h2>
 
           <!-- FECHA -->
           <div class="campo">
-            <label>Fecha</label>
-            <div class="fechas-grid">
+            <label id="label-fecha-edicion">Fecha</label>
+            <div class="fechas-grid" role="group" aria-labelledby="label-fecha-edicion">
               @for (fecha of fechasProximas(); track fecha) {
                 <button
                   type="button"
                   class="fecha-btn"
                   [class.seleccionada]="res.fecha === fecha"
                   [class.ocupada]="esDiaOcupado(fecha)"
+                  [attr.aria-pressed]="res.fecha === fecha"
+                  [attr.aria-disabled]="esDiaOcupado(fecha) ? 'true' : null"
+                  [attr.aria-label]="fecha + (esDiaOcupado(fecha) ? ', día ocupado' : ', día disponible')"
                   (click)="seleccionarFecha(fecha)">
                   <span class="fecha-dia">{{ fecha.split('-')[2] }}</span>
                   <span class="fecha-mes">{{ obtenerNombreMes(fecha) }}</span>
-                  <span class="estado-fecha">
+                  <span class="estado-fecha" aria-hidden="true">
                     @if (esDiaOcupado(fecha)) {
                       ❌
                     } @else {
@@ -85,9 +88,9 @@
 
           <!-- HORA -->
           <div class="campo">
-            <label>Hora</label>
+            <label id="label-hora-edicion">Hora</label>
             @if (horasParaFechaSeleccionada().length > 0) {
-              <div class="horas-grid">
+              <div class="horas-grid" role="group" aria-labelledby="label-hora-edicion">
                 @for (h of horasParaFechaSeleccionada(); track h.hora) {
                   <button
                     type="button"
@@ -96,9 +99,11 @@
                     [class.disponible]="h.disponible"
                     [class.ocupada]="!h.disponible"
                     [disabled]="!h.disponible"
+                    [attr.aria-pressed]="res.hora === h.hora"
+                    [attr.aria-label]="h.hora + (h.disponible ? ', disponible' : ', ocupada')"
                     (click)="seleccionarHora(h.hora)">
                     {{ h.hora }}
-                    <span class="estado-hora">
+                    <span class="estado-hora" aria-hidden="true">
                       @if (h.disponible) {
                         ✅
                       } @else {
@@ -124,32 +129,38 @@
                 max="3"
                 [(ngModel)]="res.duracion"
                 name="duracion"
+                aria-required="true"
+                aria-describedby="duracion-hint-edicion"
               >
-              <span class="duracion-hint">Máximo 3 horas</span>
+              <span id="duracion-hint-edicion" class="duracion-hint">Máximo 3 horas</span>
             </div>
           </div>
 
           <!-- MENSAJES -->
           @if (mensajeError()) {
-            <p class="mensaje-error" role="alert">
+            <p class="mensaje-error" role="alert" aria-live="assertive">
               ❌ {{ mensajeError() }}
             </p>
           }
 
           <!-- ACCIONES -->
-          <div class="acciones-edicion">
+          <div class="acciones-edicion" role="group" aria-label="Acciones de edición">
             <button
               type="button"
               class="guardar"
               (click)="guardarEdicion()"
-              [disabled]="cargando()">
+              [disabled]="cargando()"
+              [attr.aria-disabled]="cargando() ? 'true' : null"
+              aria-label="Guardar cambios de la reserva">
               {{ cargando() ? 'Guardando...' : '💾 Guardar Cambios' }}
             </button>
             <button
               type="button"
               class="cancelar"
               (click)="cancelarEdicion()"
-              [disabled]="cargando()">
+              [disabled]="cargando()"
+              [attr.aria-disabled]="cargando() ? 'true' : null"
+              aria-label="Cancelar edición de la reserva">
               ❌ Cancelar
             </button>
           </div>
@@ -160,7 +171,7 @@
       <p class="sin-reserva">
         No hay reserva para mostrar. Realiza una nueva reserva.
       </p>
-      <button type="button" class="nueva-reserva" (click)="irAMisReservas()">
+      <button type="button" class="nueva-reserva" (click)="irAMisReservas()" aria-label="Volver a la lista de mis reservas">
         ← Volver a Mis Reservas
       </button>
     }

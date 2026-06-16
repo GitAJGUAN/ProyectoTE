@@ -1,6 +1,5 @@
-<nav class="navbar">
+<nav class="navbar" aria-label="Barra superior">
 
-  <!-- USUARIO -->
   <div class="usuario-info" *ngIf="estaLogueado()">
 
     <span class="desktop-user">
@@ -13,34 +12,47 @@
 
   </div>
 
-  <!-- LOGO -->
   <div class="logo">
     Co-Working Universitario
   </div>
 
-  <!-- MENU -->
   <button
     class="menu-btn"
     *ngIf="estaLogueado()"
-    (click)="abrirMenu()">
-    ☰
+    (click)="abrirMenu()"
+    [attr.aria-expanded]="menuAbierto"
+    aria-controls="menu-lateral"
+    [attr.aria-label]="menuAbierto ? 'Cerrar menú' : 'Abrir menú'">
+    <span aria-hidden="true">☰</span>
   </button>
 
 </nav>
 
-<div class="sidebar" [class.active]="menuAbierto">
+<nav id="menu-lateral" class="sidebar" [class.active]="menuAbierto" aria-label="Menú principal">
 
   <h1>Menú</h1>
 
-  <button routerLink="/home" (click)="cerrarMenu()">
+  <button
+    routerLink="/home"
+    routerLinkActive="menu-activo"
+    ariaCurrentWhenActive="page"
+    (click)="cerrarMenu()">
     Inicio
   </button>
 
-  <button routerLink="/dashboard" (click)="cerrarMenu()">
+  <button
+    routerLink="/dashboard"
+    routerLinkActive="menu-activo"
+    ariaCurrentWhenActive="page"
+    (click)="cerrarMenu()">
     Reservar espacio
   </button>
 
-  <button routerLink="/mis-reservas" (click)="cerrarMenu()">
+  <button
+    routerLink="/mis-reservas"
+    routerLinkActive="menu-activo"
+    ariaCurrentWhenActive="page"
+    (click)="cerrarMenu()">
     Mis Reservas
   </button>
 
@@ -48,12 +60,13 @@
     Cerrar sesión
   </button>
 
-</div>
+</nav>
 
 <div
   class="overlay"
   *ngIf="menuAbierto"
-  (click)="cerrarMenu()">
+  (click)="cerrarMenu()"
+  aria-hidden="true">
 </div>
 
 <main class="contenido">
@@ -68,9 +81,9 @@
       <h3>Redes Sociales</h3>
 
       <div class="social-icons">
-        <a href="https://www.facebook.com/Ceutechn/">📘 Facebook</a>
-        <a href="https://www.instagram.com/ceutec_hn/?hl=es">📸 Instagram</a>
-        <a href="https://twitter.com/ceutec_hn">🐦 Twitter</a>
+        <a href="https://www.facebook.com/Ceutechn/"><span aria-hidden="true">📘</span> Facebook</a>
+        <a href="https://www.instagram.com/ceutec_hn/?hl=es"><span aria-hidden="true">📸</span> Instagram</a>
+        <a href="https://twitter.com/ceutec_hn"><span aria-hidden="true">🐦</span> Twitter</a>
       </div>
     </div>
 

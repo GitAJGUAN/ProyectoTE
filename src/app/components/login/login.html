@@ -14,7 +14,7 @@
 
       <h1>Login</h1>
 
-      <form>
+      <form aria-label="Formulario de inicio de sesión">
 
         <!-- EMAIL -->
         <div class="campo">
@@ -25,6 +25,9 @@
             placeholder="Ingresa tu correo"
             [(ngModel)]="correo"
             name="correo"
+            aria-required="true"
+            [attr.aria-invalid]="mensajeError ? 'true' : null"
+            aria-describedby="login-error"
           />
         </div>
 
@@ -37,6 +40,9 @@
             placeholder="Ingresa tu contraseña"
             [(ngModel)]="password"
             name="password"
+            aria-required="true"
+            [attr.aria-invalid]="mensajeError ? 'true' : null"
+            aria-describedby="login-error"
           />
         </div>
 
@@ -46,7 +52,12 @@
         </button>
 
         <!-- MENSAJE ERROR -->
-        <p class="error" *ngIf="mensajeError">
+        <p
+          id="login-error"
+          class="error"
+          role="alert"
+          aria-live="assertive"
+          *ngIf="mensajeError">
           {{ mensajeError }}
         </p>
 

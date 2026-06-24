@@ -23,40 +23,26 @@
 
     <div class="hero-card" aria-label="Resumen de espacios disponibles" role="region">
 
-      <h3>Espacios disponibles</h3>
+      <h3>Espacios disponibles ahora - <span #fechaHoyTextoEl></span></h3>
 
-      <div class="item">
-        <span>Salas de estudio</span>
-        <span class="numero" aria-label="3 salas de estudio disponibles">3</span>
-      </div>
-
-      <div class="item">
-        <span>Laboratorios</span>
-        <span class="numero" aria-label="1 laboratorio disponible">1</span>
-      </div>
-
-      <div class="item">
-        <span>Zonas colaborativas</span>
-        <span class="numero" aria-label="2 zonas colaborativas disponibles">2</span>
-      </div>
-
-      <div class="item">
-        <span>Áreas de reunión</span>
-        <span class="numero" aria-label="4 áreas de reunión disponibles">4</span>
+      <div class="item" *ngFor="let item of disponibilidadHoy()">
+        <span>{{ item.espacio }}</span>
+        <span
+          class="numero"
+          [class.sin-cupos]="item.disponibles === 0"
+          [attr.aria-label]="item.disponibles === 0 ? 'Sin espacios disponibles para ' + item.espacio : item.disponibles + ' de ' + item.total + ' espacios disponibles para ' + item.espacio">
+          {{ item.disponibles }}
+        </span>
       </div>
 
     </div>
 
   </div>
 
-  <!-- CALENDARIO -->
-  <div class="calendar-section" role="region" aria-label="Calendario de reservas">
+  <div class="selector-section" role="region" aria-label="Seleccionar espacio para reservar">
 
-    <h2>Calendario de Reservas</h2>
-
-    <full-calendar
-      [options]="calendarOptions">
-    </full-calendar>
+    <h2>Selecciona el espacio que necesitas</h2>
+    <p>Elige una categoria y reserva el horario disponible que mejor se ajuste a tu dia.</p>
 
   </div>
 

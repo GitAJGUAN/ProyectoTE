@@ -146,6 +146,7 @@
           }
 
           .eliminar-reserva {
+            display: inline-block;
             width: 100%;
             min-width: 150px;
             padding: 0.55rem 0.9rem;
@@ -156,14 +157,15 @@
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
+            text-align: center;
             transition: background 0.3s ease, color 0.3s ease;
 
-            &:hover:not(:disabled) {
+            &:hover:not(.deshabilitado) {
               background: #f1b0b7;
               color: #5f161d;
             }
 
-            &:disabled {
+            &.deshabilitado {
               opacity: 0.65;
               cursor: not-allowed;
             }
@@ -228,6 +230,135 @@
           &:hover {
             background: #d0d0d0;
           }
+        }
+      }
+    }
+  }
+
+  .modal-toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+    background: rgba(17, 24, 39, 0.68);
+  }
+
+  .modal-toggle:checked ~ .modal-backdrop {
+    display: flex;
+  }
+
+  .confirmar-eliminacion {
+    width: min(100%, 430px);
+    background: white;
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    text-align: center;
+
+    .modal-icon {
+      width: 46px;
+      height: 46px;
+      margin: 0 auto 1rem;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    h2 {
+      margin: 0 0 0.7rem;
+      color: #7f0d1b;
+      font-size: 1.7rem;
+    }
+
+    p {
+      margin: 0 auto 1.2rem;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    .modal-resumen {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      padding: 1rem;
+      margin-bottom: 1.4rem;
+      border-radius: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      text-align: left;
+
+      span {
+        color: #7f0d1b;
+        font-weight: 800;
+      }
+
+      strong {
+        color: #111827;
+      }
+
+      small {
+        color: #6b7280;
+        font-weight: 600;
+      }
+    }
+
+    .modal-acciones {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+
+      button,
+      label {
+        min-width: 130px;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        text-align: center;
+        transition: transform 0.2s ease, background 0.2s ease;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-1px);
+        }
+
+        &:disabled {
+          opacity: 0.65;
+          cursor: not-allowed;
+        }
+      }
+
+      .cancelar-modal {
+        background: white;
+        color: #374151;
+        border: 1px solid #d1d5db;
+      }
+
+      .confirmar-modal {
+        background: #991b1b;
+        color: white;
+        border: 1px solid #991b1b;
+        &:hover:not(:disabled) {
+          background: #7f1d1d;
         }
       }
     }

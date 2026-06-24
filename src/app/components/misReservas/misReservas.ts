@@ -25,6 +25,7 @@ export class MisReservas implements OnInit, OnDestroy {
   mensaje = signal('');
   error = signal('');
   eliminandoId = signal<string | null>(null);
+  reservaParaEliminar = signal<ReservaDetallada | null>(null);
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -78,18 +79,65 @@ export class MisReservas implements OnInit, OnDestroy {
       });
   }
 
+  abrirConfirmacionEliminar(reserva: ReservaDetallada) {
+    if (this.eliminandoId()) {
+      return;
+    }
+
+    this.mensaje.set('');
+    this.error.set('');
+    this.reservaParaEliminar.set(reserva);
+  }
+
+  cerrarConfirmacionEliminar() {
+    if (this.eliminandoId()) {
+      return;
+    }
+
+    this.reservaParaEliminar.set(null);
+  }
+
+  eliminarReservaConfirmada() {
+    const reserva = this.reservaParaEliminar();
+    if (!reserva?.id || this.eliminandoId()) {
+      return;
+    }
+
+    this.mensaje.set('');
+    this.error.set('');
+    this.eliminandoId.set(reserva.id);
+
+    this.reservasService.eliminarReserva(reserva.id)
+      .then(() => {
+        this.reservas.update((reservas) =>
+          reservas.filter((actual) => actual.id !== reserva.id)
+        );
+
+        const reservaReciente = localStorage.getItem('reservaReciente');
+        if (reservaReciente) {
+          const reservaGuardada = JSON.parse(reservaReciente);
+          if (reservaGuardada.id === reserva.id) {
+            localStorage.removeItem('reservaReciente');
+          }
+        }
+
+        this.mensaje.set('Reserva eliminada. Ese horario vuelve a estar disponible.');
+        this.reservaParaEliminar.set(null);
+      })
+      .catch((error) => {
+        console.error('Error al eliminar reserva:', error);
+        this.error.set('No se pudo eliminar la reserva. Intenta de nuevo.');
+      })
+      .finally(() => {
+        this.eliminandoId.set(null);
+      });
+  }
+
   eliminarReserva(reserva: Reserva) {
     if (!reserva.id || this.eliminandoId()) {
       return;
     }
 
-    const confirmar = confirm(
-      `¿Deseas eliminar la reserva de ${reserva.espacio} para el ${reserva.fecha} a las ${reserva.hora}?`
-    );
-
-    if (!confirmar) {
-      return;
-    }
 
     this.mensaje.set('');
     this.error.set('');

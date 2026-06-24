@@ -169,6 +169,23 @@ export class DashboardComponent implements OnInit {
     return this.esSabado(fecha) ? '17:00' : '21:00';
   }
 
+  esFechaActual(fecha: string): boolean {
+    return fecha === this.formatearFechaLocal(new Date());
+  }
+
+  esHoraPasada(fecha: string, hora: string): boolean {
+    if (!this.esFechaActual(fecha)) {
+      return false;
+    }
+
+    const ahora = new Date();
+    const [h, m] = hora.split(':').map(Number);
+    const inicioReserva = new Date(ahora);
+    inicioReserva.setHours(h, m, 0, 0);
+
+    return inicioReserva <= ahora;
+  }
+
   esHoraOcupada(fecha: string, hora: string): boolean {
     if (!this.reserva.aula) return false;
 
@@ -212,7 +229,10 @@ export class DashboardComponent implements OnInit {
     const horaCierre = parseInt(this.obtenerHoraCierre(fecha).split(':')[0], 10);
 
     for (let h = 7; h < horaCierre; h++) {
-      horas.push(`${String(h).padStart(2, '0')}:00`);
+      const hora = `${String(h).padStart(2, '0')}:00`;
+      if (!this.esHoraPasada(fecha, hora)) {
+        horas.push(hora);
+      }
     }
     return horas;
   }
@@ -235,6 +255,11 @@ export class DashboardComponent implements OnInit {
   obtenerNombreMes(fecha: string): string {
     const date = new Date(fecha + 'T00:00:00');
     return date.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase();
+  }
+
+  obtenerDiaSemana(fecha: string): string {
+    const date = new Date(fecha + 'T00:00:00');
+    return date.toLocaleDateString('es-ES', { weekday: 'short' }).toUpperCase();
   }
 
   onEspacioChange(): void {
@@ -263,6 +288,9 @@ export class DashboardComponent implements OnInit {
     if (this.reserva.fecha) {
       const horas = this.obtenerHorasDisponiblesParaFecha(this.reserva.fecha);
       this.horasParaFechaSeleccionada.set(horas);
+      if (this.reserva.hora && !horas.some(h => h.hora === this.reserva.hora && h.disponible)) {
+        this.reserva.hora = '';
+      }
     } else {
       this.horasParaFechaSeleccionada.set([]);
     }
@@ -386,6 +414,11 @@ export class DashboardComponent implements OnInit {
 
     if (this.reserva.hora < '07:00' || this.reserva.hora >= horaCierre) {
       this.mensaje.set(`La hora debe estar entre 7:00 AM y ${horaCierre}`);
+      return false;
+    }
+
+    if (this.esHoraPasada(this.reserva.fecha, this.reserva.hora)) {
+      this.mensaje.set('No puedes reservar una hora que ya paso');
       return false;
     }
 

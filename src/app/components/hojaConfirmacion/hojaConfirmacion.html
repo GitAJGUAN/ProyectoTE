@@ -2,180 +2,228 @@
 
   <div class="confirmacion-card">
 
-    <h1>✅ Hoja de Confirmación</h1>
+    <h1>Hoja de Confirmacion</h1>
 
-    <!-- RESERVA RECIENTE -->
-    @if (reserva(); as res) {
-      
-      <!-- VISTA NORMAL -->
-      @if (!reservaEditando()) {
-        <div class="reserva-resumen" role="region" aria-label="Detalle de la reserva confirmada">
-          <h2>{{ res.espacio }}</h2>
-          
-          <div class="detalles">
-            <div class="detalle-item">
-              <span class="label">📅 Fecha:</span>
-              <span class="valor">{{ res.fecha }}</span>
-            </div>
-            <div class="detalle-item">
-              <span class="label">🕐 Hora:</span>
-              <span class="valor">{{ res.hora }} - {{ calcularHoraFin(res.hora, res.duracion) }}</span>
-            </div>
-            <div class="detalle-item">
-              <span class="label">⏱️ Duración:</span>
-              <span class="valor">{{ res.duracion }} hora(s)</span>
-            </div>
-            @if (res.aula) {
-              <div class="detalle-item">
-                <span class="label">🏫 Aula:</span>
-                <span class="valor">{{ res.aula }}</span>
-              </div>
-            }
+    <ng-container *ngIf="reserva() as res; else sinReserva">
+
+      <div
+        *ngIf="!reservaEditando()"
+        class="reserva-resumen"
+        role="region"
+        aria-label="Detalle de la reserva confirmada">
+        <h2>{{ res.espacio }}</h2>
+
+        <div class="detalles">
+          <div class="detalle-item">
+            <span class="label">Fecha:</span>
+            <span class="valor">{{ res.fecha }}</span>
           </div>
 
-          @if (mensaje()) {
-            <p class="mensaje-exito" role="status" aria-live="polite">
-              ✅ {{ mensaje() }}
-            </p>
-          }
+          <div class="detalle-item">
+            <span class="label">Hora:</span>
+            <span class="valor">{{ res.hora ? res.hora + ' - ' + calcularHoraFin(res.hora, res.duracion) : 'Hora no seleccionada' }}</span>
+          </div>
 
-          <div class="acciones" role="group" aria-label="Acciones de la reserva">
-            <button type="button" class="editar" (click)="editarReserva()" aria-label="Editar esta reserva">
-              ✏️ Editar Reserva
-            </button>
-            <button type="button" class="eliminar" (click)="eliminarReserva()" aria-label="Eliminar esta reserva">
-              🗑️ Eliminar
-            </button>
-            <button type="button" class="confirmar" (click)="irAMisReservas()" aria-label="Ir a la lista de mis reservas">
-              → Ir a Mis Reservas
+          <div class="detalle-item">
+            <span class="label">Duracion:</span>
+            <span class="valor">{{ res.duracion }} hora(s)</span>
+          </div>
+
+          <div class="detalle-item" *ngIf="res.aula">
+            <span class="label">Aula:</span>
+            <span class="valor">{{ res.aula }}</span>
+          </div>
+        </div>
+
+        <p
+          *ngIf="mensaje()"
+          class="mensaje-exito"
+          role="status"
+          aria-live="polite">
+          {{ mensaje() }}
+        </p>
+
+        <div class="acciones" role="group" aria-label="Acciones de la reserva">
+          <button
+            type="button"
+            class="editar"
+            (click)="editarReserva()"
+            aria-label="Editar esta reserva">
+            Editar Reserva
+          </button>
+
+          <input type="checkbox" id="modal-eliminar-confirmacion" class="modal-toggle">
+          <label
+            class="eliminar"
+            for="modal-eliminar-confirmacion"
+            aria-label="Eliminar esta reserva">
+            Eliminar
+          </label>
+
+          <div class="modal-backdrop" role="presentation">
+            <section
+              class="confirmar-eliminacion"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="titulo-eliminar-reserva">
+              <div class="modal-icon" aria-hidden="true">!</div>
+              <h2 id="titulo-eliminar-reserva">Eliminar reserva</h2>
+              <p>
+                Esta accion liberara el horario seleccionado y quitara la reserva de tu lista.
+              </p>
+
+              <div class="modal-resumen">
+                <span>{{ res.espacio }}</span>
+                <strong>{{ res.fecha }} - {{ res.hora ? res.hora + ' a ' + calcularHoraFin(res.hora, res.duracion) : 'Hora no seleccionada' }}</strong>
+                <small>{{ res.aula || 'Sin aula asignada' }}</small>
+              </div>
+
+              <div class="modal-acciones">
+                <label class="cancelar-modal" for="modal-eliminar-confirmacion">
+                  Cancelar
+                </label>
+                <button
+                  type="button"
+                  class="confirmar-modal"
+                  (click)="eliminarReserva()"
+                  [disabled]="cargando()"
+                  [attr.aria-busy]="cargando() ? 'true' : null">
+                  {{ cargando() ? 'Eliminando...' : 'Eliminar reserva' }}
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <button
+            type="button"
+            class="confirmar"
+            (click)="irAMisReservas()"
+            aria-label="Ir a la lista de mis reservas">
+            Ir a Mis Reservas
+          </button>
+        </div>
+      </div>
+
+      <form
+        *ngIf="reservaEditando()"
+        class="formulario-edicion"
+        aria-label="Formulario de edicion de reserva">
+        <h2>Editar Reserva</h2>
+
+        <div class="campo">
+          <label id="label-fecha-edicion">Fecha</label>
+          <div class="fechas-grid" role="group" aria-labelledby="label-fecha-edicion">
+            <button
+              *ngFor="let fecha of fechasProximas()"
+              type="button"
+              class="fecha-btn"
+              [class.seleccionada]="res.fecha === fecha"
+              [class.ocupada]="esDiaOcupado(fecha)"
+              [attr.aria-pressed]="res.fecha === fecha"
+              [attr.aria-disabled]="esDiaOcupado(fecha) ? 'true' : null"
+              [attr.aria-label]="fecha + (esDiaOcupado(fecha) ? ', dia ocupado' : ', dia disponible')"
+              (click)="seleccionarFecha(fecha)">
+              <span class="fecha-dia">{{ fecha.split('-')[2] }}</span>
+              <span class="fecha-mes">{{ obtenerNombreMes(fecha) }}</span>
+              <span class="estado-fecha" aria-hidden="true">
+                {{ esDiaOcupado(fecha) ? 'X' : 'OK' }}
+              </span>
             </button>
           </div>
         </div>
-      }
 
-      <!-- MODO EDICION -->
-      @if (reservaEditando()) {
-        <form class="formulario-edicion" aria-label="Formulario de edición de reserva">
-          <h2>Editar Reserva</h2>
-
-          <!-- FECHA -->
-          <div class="campo">
-            <label id="label-fecha-edicion">Fecha</label>
-            <div class="fechas-grid" role="group" aria-labelledby="label-fecha-edicion">
-              @for (fecha of fechasProximas(); track fecha) {
-                <button
-                  type="button"
-                  class="fecha-btn"
-                  [class.seleccionada]="res.fecha === fecha"
-                  [class.ocupada]="esDiaOcupado(fecha)"
-                  [attr.aria-pressed]="res.fecha === fecha"
-                  [attr.aria-disabled]="esDiaOcupado(fecha) ? 'true' : null"
-                  [attr.aria-label]="fecha + (esDiaOcupado(fecha) ? ', día ocupado' : ', día disponible')"
-                  (click)="seleccionarFecha(fecha)">
-                  <span class="fecha-dia">{{ fecha.split('-')[2] }}</span>
-                  <span class="fecha-mes">{{ obtenerNombreMes(fecha) }}</span>
-                  <span class="estado-fecha" aria-hidden="true">
-                    @if (esDiaOcupado(fecha)) {
-                      ❌
-                    } @else {
-                      ✅
-                    }
-                  </span>
-                </button>
-              }
-            </div>
-          </div>
-
-          <!-- HORA -->
-          <div class="campo">
-            <label id="label-hora-edicion">Hora</label>
-            @if (horasParaFechaSeleccionada().length > 0) {
-              <div class="horas-grid" role="group" aria-labelledby="label-hora-edicion">
-                @for (h of horasParaFechaSeleccionada(); track h.hora) {
-                  <button
-                    type="button"
-                    class="hora-btn"
-                    [class.seleccionada]="res.hora === h.hora"
-                    [class.disponible]="h.disponible"
-                    [class.ocupada]="!h.disponible"
-                    [disabled]="!h.disponible"
-                    [attr.aria-pressed]="res.hora === h.hora"
-                    [attr.aria-label]="h.hora + (h.disponible ? ', disponible' : ', ocupada')"
-                    (click)="seleccionarHora(h.hora)">
-                    {{ h.hora }}
-                    <span class="estado-hora" aria-hidden="true">
-                      @if (h.disponible) {
-                        ✅
-                      } @else {
-                        ❌
-                      }
-                    </span>
-                  </button>
-                }
-              </div>
-            } @else {
-              <p class="info-text">Selecciona una fecha primero</p>
-            }
-          </div>
-
-          <!-- DURACION -->
-          <div class="campo">
-            <label for="duracion">Duración (horas)</label>
-            <div class="duracion-input-wrapper">
-              <input
-                id="duracion"
-                type="number"
-                min="1"
-                max="3"
-                [(ngModel)]="res.duracion"
-                name="duracion"
-                aria-required="true"
-                aria-describedby="duracion-hint-edicion"
-              >
-              <span id="duracion-hint-edicion" class="duracion-hint">Máximo 3 horas</span>
-            </div>
-          </div>
-
-          <!-- MENSAJES -->
-          @if (mensajeError()) {
-            <p class="mensaje-error" role="alert" aria-live="assertive">
-              ❌ {{ mensajeError() }}
-            </p>
-          }
-
-          <!-- ACCIONES -->
-          <div class="acciones-edicion" role="group" aria-label="Acciones de edición">
+        <div class="campo">
+          <label id="label-hora-edicion">Hora</label>
+          <div
+            *ngIf="horasParaFechaSeleccionada().length > 0; else sinHoras"
+            class="horas-grid"
+            role="group"
+            aria-labelledby="label-hora-edicion">
             <button
+              *ngFor="let h of horasParaFechaSeleccionada()"
               type="button"
-              class="guardar"
-              (click)="guardarEdicion()"
-              [disabled]="cargando()"
-              [attr.aria-disabled]="cargando() ? 'true' : null"
-              aria-label="Guardar cambios de la reserva">
-              {{ cargando() ? 'Guardando...' : '💾 Guardar Cambios' }}
-            </button>
-            <button
-              type="button"
-              class="cancelar"
-              (click)="cancelarEdicion()"
-              [disabled]="cargando()"
-              [attr.aria-disabled]="cargando() ? 'true' : null"
-              aria-label="Cancelar edición de la reserva">
-              ❌ Cancelar
+              class="hora-btn"
+              [class.seleccionada]="res.hora === h.hora"
+              [class.disponible]="h.disponible"
+              [class.ocupada]="!h.disponible"
+              [disabled]="!h.disponible"
+              [attr.aria-pressed]="res.hora === h.hora"
+              [attr.aria-label]="h.hora + (h.disponible ? ', disponible' : ', ocupada')"
+              (click)="seleccionarHora(h.hora)">
+              {{ h.hora }}
+              <span class="estado-hora" aria-hidden="true">
+                {{ h.disponible ? 'OK' : 'X' }}
+              </span>
             </button>
           </div>
-        </form>
-      }
+        </div>
 
-    } @else {
+        <div class="campo">
+          <label for="duracion">Duracion (horas)</label>
+          <div class="duracion-input-wrapper">
+            <input
+              id="duracion"
+              type="number"
+              min="1"
+              max="3"
+              [(ngModel)]="res.duracion"
+              name="duracion"
+              aria-required="true"
+              aria-describedby="duracion-hint-edicion">
+            <span id="duracion-hint-edicion" class="duracion-hint">Maximo 3 horas</span>
+          </div>
+        </div>
+
+        <p
+          *ngIf="mensajeError()"
+          class="mensaje-error"
+          role="alert"
+          aria-live="assertive">
+          {{ mensajeError() }}
+        </p>
+
+        <div class="acciones-edicion" role="group" aria-label="Acciones de edicion">
+          <button
+            type="button"
+            class="guardar"
+            (click)="guardarEdicion()"
+            [disabled]="cargando()"
+            [attr.aria-disabled]="cargando() ? 'true' : null"
+            aria-label="Guardar cambios de la reserva">
+            {{ cargando() ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+
+          <button
+            type="button"
+            class="cancelar"
+            (click)="cancelarEdicion()"
+            [disabled]="cargando()"
+            [attr.aria-disabled]="cargando() ? 'true' : null"
+            aria-label="Cancelar edicion de la reserva">
+            Cancelar
+          </button>
+        </div>
+      </form>
+
+    </ng-container>
+
+    <ng-template #sinReserva>
       <p class="sin-reserva">
         No hay reserva para mostrar. Realiza una nueva reserva.
       </p>
-      <button type="button" class="nueva-reserva" (click)="irAMisReservas()" aria-label="Volver a la lista de mis reservas">
-        ← Volver a Mis Reservas
+      <button
+        type="button"
+        class="nueva-reserva"
+        (click)="irAMisReservas()"
+        aria-label="Volver a la lista de mis reservas">
+        Volver a Mis Reservas
       </button>
-    }
+    </ng-template>
 
   </div>
+
+  <ng-template #sinHoras>
+    <p class="info-text">Selecciona una fecha primero</p>
+  </ng-template>
 
 </section>

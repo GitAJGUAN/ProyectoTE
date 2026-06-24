@@ -292,6 +292,12 @@ legend.sr-only {
   font-weight: 700;
 }
 
+.fecha-semana {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7f0d1b;
+}
+
 .fecha-mes {
   font-size: 11px;
   color: #6b7280;
@@ -312,6 +318,7 @@ legend.sr-only {
   color: white;
 }
 
+.fecha-btn.seleccionada .fecha-semana,
 .fecha-btn.seleccionada .fecha-mes {
   color: #d1fae5;
 }

@@ -23,6 +23,7 @@ export class HojaConfirmacion implements OnInit, OnDestroy {
   mensaje = signal('');
   mensajeError = signal('');
   reservaEditando = signal(false);
+  mostrandoConfirmacionEliminar = signal(false);
   fechasProximas = signal<string[]>([]);
   horasParaFechaSeleccionada = signal<Array<{hora: string, disponible: boolean}>>([]);
   reservasDelUsuario = signal<ReservaOcupada[]>([]);
@@ -80,16 +81,45 @@ export class HojaConfirmacion implements OnInit, OnDestroy {
               horaFin: this.calcularHoraFin(r.hora, r.duracion)
             }));
           this.reservasDelUsuario.set(miasReservas);
+
+          const reservaActual = this.reserva();
+          if (reservaActual?.id && !this.esHoraValida(reservaActual.hora)) {
+            const reservaCompleta = miasReservas.find(r => r.id === reservaActual.id);
+            if (reservaCompleta?.hora) {
+              const reservaRecuperada = {
+                ...reservaActual,
+                ...reservaCompleta
+              };
+              this.reserva.set(reservaRecuperada);
+              localStorage.setItem('reservaReciente', JSON.stringify(reservaRecuperada));
+            }
+          }
         }
       });
   }
 
   calcularHoraFin(hora: string, duracion: number): string {
+    if (!this.esHoraValida(hora)) {
+      return '';
+    }
+
     const [h, m] = hora.split(':').map(Number);
     const totalMinutos = h * 60 + m + (duracion * 60);
     const horas = Math.floor(totalMinutos / 60);
     const minutos = totalMinutos % 60;
     return `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+  }
+
+  esHoraValida(hora?: string): boolean {
+    return !!hora && /^\d{2}:\d{2}$/.test(hora);
+  }
+
+  mostrarHorario(reserva: Reserva): string {
+    if (!this.esHoraValida(reserva.hora)) {
+      return 'Hora no seleccionada';
+    }
+
+    return `${reserva.hora} - ${this.calcularHoraFin(reserva.hora, reserva.duracion)}`;
   }
 
   generarFechasProximas(): void {
@@ -124,9 +154,31 @@ export class HojaConfirmacion implements OnInit, OnDestroy {
     return this.esSabado(fecha) ? '17:00' : '21:00';
   }
 
+  esFechaActual(fecha: string): boolean {
+    return fecha === this.formatearFechaLocal(new Date());
+  }
+
+  esHoraPasada(fecha: string, hora: string): boolean {
+    if (!this.esFechaActual(fecha)) {
+      return false;
+    }
+
+    const ahora = new Date();
+    const [h, m] = hora.split(':').map(Number);
+    const inicioReserva = new Date(ahora);
+    inicioReserva.setHours(h, m, 0, 0);
+
+    return inicioReserva <= ahora;
+  }
+
   obtenerNombreMes(fecha: string): string {
     const date = new Date(fecha + 'T00:00:00');
     return date.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase();
+  }
+
+  obtenerDiaSemana(fecha: string): string {
+    const date = new Date(fecha + 'T00:00:00');
+    return date.toLocaleDateString('es-ES', { weekday: 'short' }).toUpperCase();
   }
 
   esDomingo(fecha: string): boolean {
@@ -144,7 +196,10 @@ export class HojaConfirmacion implements OnInit, OnDestroy {
     const horaCierre = parseInt(this.obtenerHoraCierre(fecha).split(':')[0], 10);
 
     for (let h = 7; h < horaCierre; h++) {
-      horas.push(`${String(h).padStart(2, '0')}:00`);
+      const hora = `${String(h).padStart(2, '0')}:00`;
+      if (!this.esHoraPasada(fecha, hora)) {
+        horas.push(hora);
+      }
     }
     return horas;
   }
@@ -211,6 +266,13 @@ export class HojaConfirmacion implements OnInit, OnDestroy {
     if (this.reserva()?.fecha) {
       const horas = this.obtenerHorasDisponiblesParaFecha(this.reserva()!.fecha);
       this.horasParaFechaSeleccionada.set(horas);
+      const reservaActual = this.reserva();
+      if (reservaActual?.hora && !horas.some(h => h.hora === reservaActual.hora && h.disponible)) {
+        this.reserva.set({
+          ...reservaActual,
+          hora: ''
+        });
+      }
     } else {
       this.horasParaFechaSeleccionada.set([]);
     }
@@ -251,6 +313,11 @@ export class HojaConfirmacion implements OnInit, OnDestroy {
 
     if (r.hora < '07:00' || r.hora >= horaCierre) {
       this.mensajeError.set(`La hora debe estar entre 7:00 AM y ${horaCierre}`);
+      return false;
+    }
+
+    if (this.esHoraPasada(r.fecha, r.hora)) {
+      this.mensajeError.set('No puedes reservar una hora que ya paso');
       return false;
     }
 
@@ -300,17 +367,32 @@ export class HojaConfirmacion implements OnInit, OnDestroy {
     });
   }
 
-  eliminarReserva() {
+  abrirConfirmacionEliminar() {
+    if (!this.reserva()?.id) return;
+    this.mostrandoConfirmacionEliminar.set(true);
+  }
+
+  cerrarConfirmacionEliminar() {
+    if (this.cargando()) return;
+    this.mostrandoConfirmacionEliminar.set(false);
+  }
+
+  eliminarReservaConfirmada() {
     if (!this.reserva()?.id) return;
 
-    if (!confirm('¿Estás seguro de que deseas eliminar esta reserva?')) {
-      return;
-    }
-
+    this.cargando.set(true);
     this.reservasService.eliminarReserva(this.reserva()!.id!).then(() => {
       localStorage.removeItem('reservaReciente');
       this.router.navigate(['/mis-reservas']);
+    }).catch(() => {
+      this.mensajeError.set('Error al eliminar la reserva');
+      this.cargando.set(false);
+      this.mostrandoConfirmacionEliminar.set(false);
     });
+  }
+
+  eliminarReserva() {
+    this.eliminarReservaConfirmada();
   }
 
   cancelarEdicion() {
